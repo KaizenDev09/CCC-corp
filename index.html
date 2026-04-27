@@ -1,117 +1,641 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Attendance Monitor</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Attendance Monitor · Login & Profile | Team Dashboard</title>
+    <!-- Google Fonts & Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #eef2f9 0%, #d9e1ec 100%);
+            font-family: 'Inter', sans-serif;
+            padding: 2rem 1.5rem;
+            min-height: 100vh;
+            color: #1a2634;
+        }
+
+        /* login overlay / container */
+        .login-container {
+            max-width: 500px;
+            margin: 5vh auto;
+            background: white;
+            border-radius: 2rem;
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            transition: all 0.2s;
+            backdrop-filter: blur(2px);
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .login-header {
+            background: #1e3a5f;
+            padding: 1.8rem 2rem;
+            text-align: center;
+            color: white;
+        }
+        .login-header i {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+        .login-header h2 {
+            font-weight: 600;
+            font-size: 1.6rem;
+        }
+        .login-header p {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+        .login-form {
+            padding: 2rem;
+        }
+        .form-group {
+            margin-bottom: 1.4rem;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #2c5a7a;
+        }
+        .form-group select, .form-group input {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            border-radius: 1.2rem;
+            border: 1.5px solid #e0edf5;
+            font-family: 'Inter', sans-serif;
+            background: #fefefe;
+            transition: 0.2s;
+            font-size: 0.95rem;
+        }
+        .form-group select:focus, .form-group input:focus {
+            outline: none;
+            border-color: #e9c46a;
+            box-shadow: 0 0 0 3px rgba(233,196,106,0.2);
+        }
+        .login-btn {
+            background: #1e3a5f;
+            color: white;
+            width: 100%;
+            padding: 0.9rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 2rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 0.5rem;
+        }
+        .login-btn:hover {
+            background: #0f2c48;
+            transform: translateY(-2px);
+        }
+        .error-msg {
+            color: #c23b22;
+            font-size: 0.8rem;
+            margin-top: 0.6rem;
+            text-align: center;
+        }
+
+        /* main dashboard (hidden until login) */
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.75);
+            backdrop-filter: blur(2px);
+            border-radius: 2rem;
+            box-shadow: 0 25px 45px -12px rgba(0,0,0,0.25);
+            overflow: hidden;
+            padding: 1.8rem 2rem 2.5rem;
+            transition: all 0.2s ease;
+        }
+
+        /* profile card UI (based on photo context) */
+        .profile-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            border-radius: 1.5rem;
+            padding: 0.8rem 1.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            border: 1px solid #e2edf7;
+        }
+        .profile-info {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+        }
+        .profile-avatar {
+            background: linear-gradient(135deg, #2c5a7a, #1e3a5f);
+            width: 52px;
+            height: 52px;
+            border-radius: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.8rem;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+        .profile-details h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1e2f3c;
+        }
+        .profile-details p {
+            font-size: 0.8rem;
+            color: #5f7f9c;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 4px;
+        }
+        .attendance-badge {
+            background: #e1f7ed;
+            padding: 0.3rem 0.9rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #1e6f42;
+        }
+        .attendance-badge.absent {
+            background: #ffe6e5;
+            color: #b13e3a;
+        }
+        .attendance-badge.late {
+            background: #fff0db;
+            color: #b4621a;
+        }
+        .logout-btn {
+            background: #f0f4f9;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 2rem;
+            font-weight: 500;
+            cursor: pointer;
+            color: #c23b22;
+            transition: 0.2s;
+        }
+        .logout-btn:hover {
+            background: #ffe0db;
+        }
+
+        /* header */
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid rgba(46, 87, 145, 0.2);
+            padding-bottom: 0.75rem;
+        }
+        .title-section h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #1E3A5F, #2C5A7A);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .month-badge {
+            background: #f4f7fc;
+            border-radius: 40px;
+            padding: 0.3rem 1.2rem;
+            font-weight: 600;
+            color: #1e3a5f;
+            border: 1px solid #cbdde9;
+        }
+
+        /* mood card and stats (keep existing style) */
+        .mood-card, .stats-grid, .table-wrapper, .action-btns, .footer-note {
+            /* styles already defined, reuse from previous */
+        }
+        .mood-card {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 1.2rem 1.8rem;
+            margin: 1.5rem 0 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .stats-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin: 2rem 0 1.5rem;
+        }
+        .report-card {
+            background: white;
+            border-radius: 1.8rem;
+            padding: 1rem 1.8rem;
+            flex: 1;
+            min-width: 200px;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.02);
+            border: 1px solid #e2edf7;
+        }
+        .report-number {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #1e3a5f;
+        }
+        .progress-bar-bg {
+            background: #e2e8f0;
+            border-radius: 20px;
+            margin-top: 12px;
+            height: 8px;
+            width: 100%;
+        }
+        .progress-fill {
+            background: #2f855a;
+            width: 0%;
+            height: 100%;
+            border-radius: 20px;
+        }
+        .absent-list {
+            font-size: 0.8rem;
+            background: #f9f5f0;
+            border-radius: 1rem;
+            padding: 0.6rem 1rem;
+            margin-top: 0.6rem;
+        }
+        .attendance-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .attendance-table th, .attendance-table td {
+            padding: 0.9rem 1rem;
+            border-bottom: 1px solid #ecf3f9;
+            text-align: left;
+        }
+        .status-select {
+            background: #fefefe;
+            border: 1.5px solid #ccdee9;
+            padding: 0.5rem 0.8rem;
+            border-radius: 40px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .status-select.present { background: #e1f7ed; border-color: #87b9a3; color: #1e6f42; }
+        .status-select.absent { background: #ffe6e5; border-color: #e0a29f; color: #b13e3a; }
+        .status-select.late { background: #fff0db; border-color: #f5bc70; color: #b4621a; }
+        .btn-sm {
+            background: #eef3fc;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 2rem;
+            cursor: pointer;
+        }
+        .btn-primary {
+            background: #1e3a5f;
+            color: white;
+        }
+        .footer-note {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #5f7f9c;
+        }
+        @media (max-width: 680px) {
+            .dashboard { padding: 1rem; }
+            .profile-section { flex-direction: column; align-items: stretch; }
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>Attendance Monitor</h1>
-    <nav>
-      <button onclick="showScreen('login')">Login</button>
-      <button onclick="showScreen('greeting')">Greeting</button>
-      <button onclick="showScreen('attendance')">Attendance</button>
-      <button onclick="showScreen('report')">Report</button>
-      <button onclick="showScreen('profile')">Profile</button>
-      <button onclick="showScreen('calendar')">Calendar</button>
-      <button onclick="showScreen('camera')">Camera</button>
-      <button onclick="showScreen('admin')">Admin</button>
-    </nav>
-  </header>
 
-  <main>
-    <!-- Login -->
-    <section id="login" class="screen active">
-      <h2>Login</h2>
-      <form onsubmit="login(event)">
-        <input type="text" id="username" placeholder="Username" required>
-        <input type="password" id="password" placeholder="Password" required>
-        <button type="submit">Login</button>
-      </form>
-    </section>
+<!-- LOGIN UI (based on photo, using member names) -->
+<div id="loginContainer" class="login-container">
+    <div class="login-header">
+        <i class="fas fa-clipboard-list"></i>
+        <h2>ATTENDANCE MONITOR</h2>
+        <p>Team access · based on photo roster</p>
+    </div>
+    <div class="login-form">
+        <div class="form-group">
+            <label><i class="fas fa-user-circle"></i> Select your profile</label>
+            <select id="memberSelect">
+                <option value="">-- choose member from photo --</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label><i class="fas fa-lock"></i> Passcode (demo: any)</label>
+            <input type="password" id="loginPassword" placeholder="••••••" value="demo">
+        </div>
+        <button id="doLoginBtn" class="login-btn"><i class="fas fa-sign-in-alt"></i> Enter Dashboard</button>
+        <div id="loginError" class="error-msg"></div>
+        <div style="margin-top: 1rem; text-align: center; font-size: 0.8rem; color: #6b7c8f;">
+            <i class="fas fa-info-circle"></i> Choose any name from the team (Fernandez, Gaspap, Guizon, Pajo, Pascua, Mangallman, Nido)
+        </div>
+    </div>
+</div>
 
-    <!-- Greeting -->
-    <section id="greeting" class="screen">
-      <h2>How’s your day?</h2>
-      <div class="emoji-buttons">
-        <button onclick="setMood('😊')">Good</button>
-        <button onclick="setMood('😐')">Okay</button>
-        <button onclick="setMood('😢')">Bad</button>
-      </div>
-      <p id="mood-result"></p>
-    </section>
+<!-- MAIN DASHBOARD (Attendance Monitor + Profile UI) -->
+<div id="dashboardApp" style="display: none;">
+    <div class="dashboard">
+        <!-- PROFILE UI Section (integrated with photo names) -->
+        <div class="profile-section" id="profileCard">
+            <div class="profile-info">
+                <div class="profile-avatar" id="profileAvatar">
+                    <i class="fas fa-user-astronaut"></i>
+                </div>
+                <div class="profile-details">
+                    <h3 id="profileName">Member Name</h3>
+                    <p><i class="fas fa-users"></i> Group 1 · <span id="profileRole">Team Member</span></p>
+                </div>
+            </div>
+            <div style="display: flex; gap: 12px; align-items: center;">
+                <div id="profileStatusBadge" class="attendance-badge">Present</div>
+                <button id="logoutButton" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
+        </div>
 
-    <!-- Attendance -->
-    <section id="attendance" class="screen">
-      <h2>Classroom Attendance</h2>
-      <ul id="attendance-list">
-        <li>Student 1 <button onclick="markPresent(this)">Mark Present</button></li>
-        <li>Student 2 <button onclick="markPresent(this)">Mark Present</button></li>
-        <li>Student 3 <button onclick="markPresent(this)">Mark Present</button></li>
-      </ul>
-    </section>
+        <!-- HEADER -->
+        <div class="header-top">
+            <div class="title-section">
+                <h1><i class="fas fa-clipboard-list"></i> ATTENDANCE MONITOR</h1>
+            </div>
+            <div class="month-badge">
+                <i class="far fa-calendar-alt"></i> APRIL 2026
+            </div>
+        </div>
 
-    <!-- Report -->
-    <section id="report" class="screen">
-      <h2>Report</h2>
-      <canvas id="report-chart" width="200" height="200"></canvas>
-      <p id="report-text">0% TOTAL PRESENT</p>
-    </section>
+        <!-- How's your day? interactive -->
+        <div class="mood-card">
+            <div class="mood-question">
+                <i class="far fa-smile-wink"></i>
+                <span>How's your day?</span>
+            </div>
+            <div class="emojis-container" id="moodSelector">
+                <button data-mood="great" class="mood-btn"><i class="fas fa-laugh-beam"></i> Great</button>
+                <button data-mood="good" class="mood-btn"><i class="fas fa-smile"></i> Good</button>
+                <button data-mood="okay" class="mood-btn"><i class="far fa-meh"></i> Okay</button>
+                <button data-mood="rough" class="mood-btn"><i class="fas fa-frown"></i> Rough</button>
+            </div>
+            <div class="mood-feedback" id="moodFeedback"><i class="fas fa-heart"></i> group energy: positive</div>
+        </div>
 
-    <!-- Profile -->
-    <section id="profile" class="screen">
-      <h2>Profile</h2>
-      <img src="https://via.placeholder.com/120" alt="Profile Picture" class="profile-pic">
-      <div class="profile-card">
-        <p><strong>Name:</strong> John Doe</p>
-        <p><strong>Class:</strong> 10-A</p>
-        <p><strong>Email:</strong> johndoe@email.com</p>
-      </div>
-    </section>
+        <!-- REPORT stats -->
+        <div class="stats-grid">
+            <div class="report-card"><h3><i class="fas fa-chalkboard-user"></i> TOTAL MEMBERS</h3><div class="report-number" id="totalMembers">7</div><div class="report-detail">Active team</div></div>
+            <div class="report-card"><h3><i class="fas fa-check-circle"></i> PRESENT</h3><div class="report-number" id="presentCount">0</div><div class="progress-bar-bg"><div class="progress-fill" id="presentProgress"></div></div><div class="report-detail">attendance rate</div></div>
+            <div class="report-card"><h3><i class="fas fa-clock"></i> LATE</h3><div class="report-number" id="lateCount">0</div></div>
+            <div class="report-card"><h3><i class="fas fa-user-slash"></i> ABSENT</h3><div class="report-number" id="absentCount">0</div><div id="absentNamesList" class="absent-list">—</div></div>
+        </div>
 
-    <!-- Calendar -->
-    <section id="calendar" class="screen">
-      <h2>April</h2>
-      <table id="calendar-table">
-        <tr>
-          <td onclick="highlightDate(this)">1</td>
-          <td onclick="highlightDate(this)">2</td>
-          <td onclick="highlightDate(this)">3</td>
-          <td onclick="highlightDate(this)">4</td>
-          <td onclick="highlightDate(this)">5</td>
-        </tr>
-        <tr>
-          <td onclick="highlightDate(this)">6</td>
-          <td onclick="highlightDate(this)">7</td>
-          <td onclick="highlightDate(this)">8</td>
-          <td onclick="highlightDate(this)">9</td>
-          <td onclick="highlightDate(this)">10</td>
-        </tr>
-      </table>
-    </section>
+        <!-- Attendance table: Surname, Name + M.N -->
+        <div class="table-wrapper">
+            <table class="attendance-table" id="attendanceTable">
+                <thead><tr><th><i class="fas fa-user-edit"></i> Surname, Name (Member)</th><th><i class="fas fa-pen-alt"></i> M.N · Attendance mark</th></tr></thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
 
-    <!-- Camera -->
-    <section id="camera" class="screen">
-      <h2>Camera</h2>
-      <video id="video" width="300" autoplay></video>
-      <button onclick="takePhoto()">Capture</button>
-      <canvas id="photo" width="300" height="200"></canvas>
-    </section>
+        <div class="action-btns">
+            <button class="btn-sm" id="resetAllPresentBtn"><i class="fas fa-check-double"></i> Set all Present</button>
+            <button class="btn-sm" id="resetAllAbsentBtn"><i class="fas fa-ban"></i> Set all Absent</button>
+            <button class="btn-sm btn-primary" id="refreshReportBtn"><i class="fas fa-chart-simple"></i> Refresh report</button>
+        </div>
+        <div class="footer-note"><i class="far fa-calendar-check"></i> Attendance monitor · April 2026 · based on original photo roster</div>
+    </div>
+</div>
 
-    <!-- Admin -->
-    <section id="admin" class="screen">
-      <h2>Admin Dashboard</h2>
-      <ul>
-        <li>View all attendance records</li>
-        <li>Manage student profiles</li>
-        <li>Generate reports</li>
-        <li>System settings</li>
-      </ul>
-    </section>
-  </main>
+<script>
+    // ---------- MEMBER DATA (exactly as from photo) ----------
+    const members = [
+        { fullName: "Fernandez, R.", defaultStatus: "Present" },
+        { fullName: "Gaspap, Star", defaultStatus: "Present" },
+        { fullName: "Guizon, Nico", defaultStatus: "Present" },
+        { fullName: "Pajo, Darren", defaultStatus: "Present" },
+        { fullName: "Pascua, John", defaultStatus: "Present" },
+        { fullName: "Mangallman", defaultStatus: "Present" },
+        { fullName: "Nido, Briann", defaultStatus: "Present" }
+    ];
 
-  <script src="script.js"></script>
+    let attendanceStatus = members.map(m => m.defaultStatus);   // "Present", "Absent", "Late"
+    let currentLoggedInUser = null;     // stores { index, fullName }
+    
+    // DOM elements
+    const loginContainer = document.getElementById('loginContainer');
+    const dashboardApp = document.getElementById('dashboardApp');
+    const memberSelect = document.getElementById('memberSelect');
+    const loginErrorDiv = document.getElementById('loginError');
+    const doLoginBtn = document.getElementById('doLoginBtn');
+    const logoutBtn = document.getElementById('logoutButton');
+    const profileNameSpan = document.getElementById('profileName');
+    const profileStatusBadge = document.getElementById('profileStatusBadge');
+    
+    // Helper: populate login dropdown with members (based on photo)
+    function populateMemberSelect() {
+        memberSelect.innerHTML = '<option value="">-- choose member from photo --</option>';
+        members.forEach((member, idx) => {
+            const option = document.createElement('option');
+            option.value = idx;
+            option.textContent = member.fullName;
+            memberSelect.appendChild(option);
+        });
+    }
+    
+    // update profile UI based on logged-in user & current status
+    function updateProfileUI() {
+        if (!currentLoggedInUser) return;
+        const userIdx = currentLoggedInUser.index;
+        const userStatus = attendanceStatus[userIdx];
+        profileNameSpan.textContent = members[userIdx].fullName;
+        // set badge style & text
+        profileStatusBadge.textContent = userStatus;
+        profileStatusBadge.className = 'attendance-badge';
+        if (userStatus === 'Absent') profileStatusBadge.classList.add('absent');
+        else if (userStatus === 'Late') profileStatusBadge.classList.add('late');
+        else profileStatusBadge.classList.add('present');
+        
+        // optional avatar icon
+        const avatarDiv = document.querySelector('#profileAvatar');
+        if (avatarDiv) {
+            const initial = members[userIdx].fullName.charAt(0);
+            avatarDiv.innerHTML = `<i class="fas fa-user-circle"></i>`;
+        }
+    }
+    
+    // Update report numbers + absent list (global stats)
+    function updateReportAndProgress() {
+        let present = 0, absent = 0, late = 0;
+        attendanceStatus.forEach(st => {
+            if (st === 'Present') present++;
+            else if (st === 'Absent') absent++;
+            else if (st === 'Late') late++;
+        });
+        const total = members.length;
+        document.getElementById('presentCount').innerText = present;
+        document.getElementById('absentCount').innerText = absent;
+        document.getElementById('lateCount').innerText = late;
+        document.getElementById('totalMembers').innerText = total;
+        const attendanceRate = total === 0 ? 0 : Math.round((present / total) * 100);
+        const progressFill = document.getElementById('presentProgress');
+        if (progressFill) progressFill.style.width = `${attendanceRate}%`;
+        
+        const absentNamesArray = [];
+        attendanceStatus.forEach((st, idx) => { if (st === 'Absent') absentNamesArray.push(members[idx].fullName); });
+        const absentDiv = document.getElementById('absentNamesList');
+        if (absentNamesArray.length === 0) absentDiv.innerHTML = '<i class="fas fa-check-circle"></i> No absent members!';
+        else absentDiv.innerHTML = `<i class="fas fa-user-times"></i> ${absentNamesArray.join(', ')}`;
+        
+        const rateSpan = document.querySelector('.report-card:nth-child(2) .report-detail');
+        if (rateSpan) rateSpan.innerHTML = `${attendanceRate}% present rate · April`;
+        
+        // also update profile card (to sync current user status)
+        if (currentLoggedInUser) updateProfileUI();
+    }
+    
+    // re-render full attendance table with status dropdowns
+    function renderAttendanceTable() {
+        const tbody = document.getElementById('tableBody');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+        members.forEach((member, idx) => {
+            const status = attendanceStatus[idx];
+            const row = tbody.insertRow();
+            const nameCell = row.insertCell(0);
+            nameCell.className = 'member-name';
+            nameCell.innerHTML = `<i class="fas fa-user-circle"></i> ${member.fullName}`;
+            const statusCell = row.insertCell(1);
+            const select = document.createElement('select');
+            select.className = `status-select ${getStatusClass(status)}`;
+            ['Present', 'Absent', 'Late'].forEach(opt => {
+                const optionElem = document.createElement('option');
+                optionElem.value = opt;
+                optionElem.textContent = opt;
+                if (opt === status) optionElem.selected = true;
+                select.appendChild(optionElem);
+            });
+            select.addEventListener('change', (e) => {
+                const newStatus = e.target.value;
+                attendanceStatus[idx] = newStatus;
+                select.className = `status-select ${getStatusClass(newStatus)}`;
+                updateReportAndProgress();
+            });
+            statusCell.appendChild(select);
+        });
+        updateReportAndProgress();   // refresh stats and profile badge
+    }
+    
+    function getStatusClass(status) {
+        if (status === 'Present') return 'present';
+        if (status === 'Absent') return 'absent';
+        if (status === 'Late') return 'late';
+        return '';
+    }
+    
+    // Bulk actions
+    function setAllPresent() { attendanceStatus = attendanceStatus.map(() => 'Present'); renderAttendanceTable(); }
+    function setAllAbsent() { attendanceStatus = attendanceStatus.map(() => 'Absent'); renderAttendanceTable(); }
+    
+    // mood widget (keep from original)
+    function initMoodWidget() {
+        const moodBtns = document.querySelectorAll('#moodSelector .mood-btn');
+        const feedbackDiv = document.getElementById('moodFeedback');
+        const moodMap = {
+            great: { emoji: '🚀', text: 'Amazing energy! Team feels inspired 🔥' },
+            good: { emoji: '😊', text: 'Positive vibes — productive day ahead!' },
+            okay: { emoji: '🙂', text: 'Steady mood — let’s make it count!' },
+            rough: { emoji: '🌧️', text: 'Sending support — tomorrow will be brighter ✨' }
+        };
+        function setActive(activeBtn) {
+            moodBtns.forEach(btn => btn.classList.remove('active'));
+            activeBtn.classList.add('active');
+            const moodValue = activeBtn.getAttribute('data-mood');
+            if (moodValue && moodMap[moodValue]) feedbackDiv.innerHTML = `<i class="fas fa-comment-dots"></i> ${moodMap[moodValue].emoji} ${moodMap[moodValue].text}`;
+            else feedbackDiv.innerHTML = `<i class="fas fa-heart"></i> group energy: shared feeling`;
+        }
+        moodBtns.forEach(btn => btn.addEventListener('click', () => setActive(btn)));
+        const defaultMood = document.querySelector('.mood-btn[data-mood="good"]');
+        if (defaultMood) setActive(defaultMood);
+    }
+    
+    // LOGIC: Login handler
+    function handleLogin() {
+        const selectedIndex = memberSelect.value;
+        const passwordInput = document.getElementById('loginPassword').value.trim();
+        if (selectedIndex === "" || selectedIndex === null) {
+            loginErrorDiv.innerText = "❌ Please select a team member from the photo roster.";
+            return;
+        }
+        if (passwordInput === "") {
+            loginErrorDiv.innerText = "❌ Please enter a passcode (demo: any)";
+            return;
+        }
+        // Demo auth - accept any password for simplicity, but based on photo we accept member.
+        const idx = parseInt(selectedIndex, 10);
+        if (idx >= 0 && idx < members.length) {
+            currentLoggedInUser = { index: idx, fullName: members[idx].fullName };
+            // hide login, show dashboard
+            loginContainer.style.display = "none";
+            dashboardApp.style.display = "block";
+            // render attendace table (status already in memory)
+            renderAttendanceTable();
+            initMoodWidget();
+            updateProfileUI();
+            // attach bulk event listeners (refresh setup)
+            setupGlobalButtons();
+        } else {
+            loginErrorDiv.innerText = "Invalid selection, please try again.";
+        }
+    }
+    
+    function setupGlobalButtons() {
+        const presetBtn = document.getElementById('resetAllPresentBtn');
+        const absentBtn = document.getElementById('resetAllAbsentBtn');
+        const refreshBtn = document.getElementById('refreshReportBtn');
+        if (presetBtn) presetBtn.onclick = () => { setAllPresent(); updateProfileUI(); };
+        if (absentBtn) absentBtn.onclick = () => { setAllAbsent(); updateProfileUI(); };
+        if (refreshBtn) refreshBtn.onclick = () => { updateReportAndProgress(); };
+    }
+    
+    function logout() {
+        currentLoggedInUser = null;
+        dashboardApp.style.display = "none";
+        loginContainer.style.display = "block";
+        // reset attendance to default?
+        attendanceStatus = members.map(m => m.defaultStatus);
+        // clear any error
+        if (loginErrorDiv) loginErrorDiv.innerText = "";
+        if (memberSelect) memberSelect.value = "";
+    }
+    
+    // Event listeners
+    doLoginBtn.addEventListener('click', handleLogin);
+    if (logoutBtn) logoutBtn.addEventListener('click', logout);
+    // optional: allow Enter key on password
+    document.getElementById('loginPassword')?.addEventListener('keypress', (e) => { if(e.key === 'Enter') handleLogin(); });
+    
+    // initial population of member select (based on photo names)
+    populateMemberSelect();
+    
+    // Also delegate any future changes to profile on status update (already done in updateReportAndProgress)
+    // Ensure that when login, we reset any state
+    window.onload = () => {
+        // prefill local storage demo, but just ensure login is shown.
+        loginContainer.style.display = "block";
+        dashboardApp.style.display = "none";
+    };
+</script>
 </body>
 </html>
