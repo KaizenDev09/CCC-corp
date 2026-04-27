@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attendance Monitor</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Attendance Monitor</h1>
+    <nav>
+      <button onclick="showScreen('login')">Login</button>
+      <button onclick="showScreen('greeting')">Greeting</button>
+      <button onclick="showScreen('attendance')">Attendance</button>
+      <button onclick="showScreen('report')">Report</button>
+      <button onclick="showScreen('profile')">Profile</button>
+      <button onclick="showScreen('calendar')">Calendar</button>
+      <button onclick="showScreen('camera')">Camera</button>
+      <button onclick="showScreen('admin')">Admin</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Login -->
+    <section id="login" class="screen active">
+      <h2>Login</h2>
+      <form onsubmit="login(event)">
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button type="submit">Login</button>
+      </form>
+    </section>
+
+    <!-- Greeting -->
+    <section id="greeting" class="screen">
+      <h2>How’s your day?</h2>
+      <div class="emoji-buttons">
+        <button onclick="setMood('😊')">Good</button>
+        <button onclick="setMood('😐')">Okay</button>
+        <button onclick="setMood('😢')">Bad</button>
+      </div>
+      <p id="mood-result"></p>
+    </section>
+
+    <!-- Attendance -->
+    <section id="attendance" class="screen">
+      <h2>Classroom Attendance</h2>
+      <ul id="attendance-list">
+        <li>Student 1 <button onclick="markPresent(this)">Mark Present</button></li>
+        <li>Student 2 <button onclick="markPresent(this)">Mark Present</button></li>
+        <li>Student 3 <button onclick="markPresent(this)">Mark Present</button></li>
+      </ul>
+    </section>
+
+    <!-- Report -->
+    <section id="report" class="screen">
+      <h2>Report</h2>
+      <canvas id="report-chart" width="200" height="200"></canvas>
+      <p id="report-text">0% TOTAL PRESENT</p>
+    </section>
+
+    <!-- Profile -->
+    <section id="profile" class="screen">
+      <h2>Profile</h2>
+      <img src="https://via.placeholder.com/120" alt="Profile Picture" class="profile-pic">
+      <div class="profile-card">
+        <p><strong>Name:</strong> John Doe</p>
+        <p><strong>Class:</strong> 10-A</p>
+        <p><strong>Email:</strong> johndoe@email.com</p>
+      </div>
+    </section>
+
+    <!-- Calendar -->
+    <section id="calendar" class="screen">
+      <h2>April</h2>
+      <table id="calendar-table">
+        <tr>
+          <td onclick="highlightDate(this)">1</td>
+          <td onclick="highlightDate(this)">2</td>
+          <td onclick="highlightDate(this)">3</td>
+          <td onclick="highlightDate(this)">4</td>
+          <td onclick="highlightDate(this)">5</td>
+        </tr>
+        <tr>
+          <td onclick="highlightDate(this)">6</td>
+          <td onclick="highlightDate(this)">7</td>
+          <td onclick="highlightDate(this)">8</td>
+          <td onclick="highlightDate(this)">9</td>
+          <td onclick="highlightDate(this)">10</td>
+        </tr>
+      </table>
+    </section>
+
+    <!-- Camera -->
+    <section id="camera" class="screen">
+      <h2>Camera</h2>
+      <video id="video" width="300" autoplay></video>
+      <button onclick="takePhoto()">Capture</button>
+      <canvas id="photo" width="300" height="200"></canvas>
+    </section>
+
+    <!-- Admin -->
+    <section id="admin" class="screen">
+      <h2>Admin Dashboard</h2>
+      <ul>
+        <li>View all attendance records</li>
+        <li>Manage student profiles</li>
+        <li>Generate reports</li>
+        <li>System settings</li>
+      </ul>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
