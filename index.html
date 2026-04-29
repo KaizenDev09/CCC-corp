@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>Attendance Monitor</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
@@ -16,261 +16,237 @@ box-sizing:border-box;
 }
 
 body{
-background:linear-gradient(145deg,#eef2f9 0%,#d9e1ec 100%);
+background:linear-gradient(145deg,#e8f0fe 0%,#c5d8f9 100%);
 font-family:'Inter',sans-serif;
-padding:1rem 0.5rem;
-min-height:100vh;
 color:#1a2634;
-line-height:1.5;
--webkit-font-smoothing: antialiased;
--moz-osx-font-smoothing: grayscale;
+min-height:100vh;
+padding:0.5rem;
+line-height:1.4;
 }
 
 .login-container{
-max-width:500px;
-margin:5vh auto;
+max-width:400px;
+margin:2vh auto;
 background:white;
-border-radius:2rem;
-box-shadow:0 30px 50px rgba(0,0,0,0.2);
+border-radius:1.5rem;
+box-shadow:0 20px 40px rgba(0,0,0,0.15);
 overflow:hidden;
-border:1px solid rgba(255,255,255,0.5);
+border:1px solid rgba(255,255,255,0.4);
 }
 
 .login-header{
-background:#1e3a5f;
-padding:2rem 1.5rem;
+background:linear-gradient(135deg,#1e3a5f,#2c5a7a);
+padding:1.5rem 1.2rem;
 text-align:center;
 color:white;
 }
 
 .login-header i{
-font-size:2.8rem;
-margin-bottom:0.8rem;
+font-size:2.2rem;
+margin-bottom:0.5rem;
 opacity:0.95;
 }
 
 .login-header h2{
-font-size:1.3rem;
+font-size:1.1rem;
 font-weight:600;
 margin:0;
-letter-spacing:0.5px;
+letter-spacing:0.3px;
 }
 
 .login-form{
-padding:2rem 1.5rem 1.5rem;
+padding:1.5rem 1.2rem;
 }
 
 .form-group{
-margin-bottom:1.5rem;
-position:relative;
+margin-bottom:1.2rem;
 }
 
 .form-group label{
 display:block;
 font-weight:600;
-margin-bottom:0.7rem;
+margin-bottom:0.5rem;
 color:#2c5a7a;
-font-size:1rem;
+font-size:0.9rem;
 }
 
 .form-group select,
 .form-group input{
 width:100%;
-padding:1.1rem 1.2rem;
-border-radius:1.4rem;
-border:2px solid #e0edf5;
+padding:0.9rem 1rem;
+border-radius:1rem;
+border:1.5px solid #e0e7ff;
 font-family:'Inter',sans-serif;
 background:#fff;
-font-size:1rem;
-transition: all 0.3s ease;
+font-size:0.95rem;
+font-weight:500;
+transition: all 0.2s ease;
+cursor:pointer;
 -webkit-appearance: none;
 -moz-appearance: none;
 appearance: none;
-cursor:pointer;
 }
 
 .form-group select{
-background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
 background-repeat: no-repeat;
-background-position: right 1rem center;
-background-size: 1.2em;
-padding-right: 3rem;
+background-position: right 0.8rem center;
+background-size: 1rem;
+padding-right: 2.5rem;
+min-height:48px;
 }
 
 .form-group select:focus,
 .form-group input:focus{
 outline:none;
 border-color:#1e3a5f;
-box-shadow:0 0 0 3px rgba(30,58,95,0.1);
+box-shadow:0 0 0 2px rgba(30,58,95,0.1);
 }
 
 .login-btn{
 background:linear-gradient(135deg,#1e3a5f,#2c5a7a);
 color:white;
 width:100%;
-padding:1.2rem;
-font-weight:700;
+padding:1rem;
+font-weight:600;
 border:none;
-border-radius:2rem;
-font-size:1.1rem;
+border-radius:1.2rem;
+font-size:1rem;
 cursor:pointer;
-transition: all 0.3s ease;
-letter-spacing:0.5px;
-position:relative;
-overflow:hidden;
-}
-
-.login-btn::before{
-content:'';
-position:absolute;
-top:0;
-left:-100%;
-width:100%;
-height:100%;
-background:linear-gradient(90deg,transparent, rgba(255,255,255,0.2), transparent);
-transition: left 0.5s;
-}
-
-.login-btn:hover::before{
-left:100%;
+transition: all 0.2s ease;
+min-height:48px;
+letter-spacing:0.3px;
 }
 
 .login-btn:hover,
 .login-btn:active{
-transform: translateY(-2px);
-box-shadow:0 15px 30px rgba(30,58,95,0.3);
+transform: translateY(-1px);
+box-shadow:0 8px 20px rgba(30,58,95,0.3);
 }
 
 #loginError{
-color:#b13e3a;
-font-size:0.9rem;
+color:#dc2626;
+font-size:0.85rem;
 text-align:center;
-margin-top:1rem;
-min-height:1.2rem;
+margin-top:0.8rem;
+min-height:1rem;
 }
 
 .dashboard{
-max-width:1200px;
-margin:0 auto;
-background:rgba(255,255,255,0.97);
-backdrop-filter: blur(10px);
-border-radius:2rem;
-box-shadow:0 25px 50px -15px rgba(0,0,0,0.15);
-padding:1.5rem;
+max-width:100%;
+margin:0.5rem auto 0;
+background:white;
+border-radius:1.2rem;
+box-shadow:0 15px 35px rgba(0,0,0,0.12);
+padding:1rem;
+overflow:hidden;
 }
 
 .profile-section{
 display:flex;
 justify-content:space-between;
 align-items:center;
-background:linear-gradient(135deg, #fff 0%, #f8fafc 100%);
-border-radius:1.5rem;
-padding:1.2rem 1.5rem;
-margin-bottom:1.5rem;
+background:#f8fafc;
+border-radius:1rem;
+padding:0.8rem 1rem;
+margin-bottom:1rem;
 flex-wrap:wrap;
-gap:1rem;
-border:1px solid rgba(255,255,255,0.6);
+gap:0.8rem;
+border:1px solid #e2e8f0;
 }
 
 .profile-info{
 display:flex;
 align-items:center;
-gap:1rem;
+gap:0.8rem;
 flex:1;
-min-width:220px;
+min-width:0;
 }
 
 .profile-avatar{
 background:linear-gradient(135deg,#2c5a7a,#1e3a5f);
-width:50px;
-height:50px;
+width:40px;
+height:40px;
 border-radius:50%;
 display:flex;
 align-items:center;
 justify-content:center;
 color:white;
-font-size:1.4rem;
+font-size:1.2rem;
 flex-shrink:0;
-box-shadow:0 4px 15px rgba(44,90,122,0.3);
 }
 
 .profile-name{
-font-size:1.1rem;
-font-weight:700;
+font-size:0.95rem;
+font-weight:600;
 margin:0;
-color:#1a2634;
+overflow:hidden;
+text-overflow:ellipsis;
+white-space:nowrap;
 }
 
 .profile-code{
-font-size:0.85rem;
-color:#666;
+font-size:0.75rem;
+color:#64748b;
 margin:0;
-font-weight:500;
 }
 
 .attendance-badge{
-padding:0.5rem 1rem;
-border-radius:35px;
-font-size:0.8rem;
-font-weight:700;
-box-shadow:0 2px 10px rgba(0,0,0,0.1);
+padding:0.4rem 0.8rem;
+border-radius:25px;
+font-size:0.7rem;
+font-weight:600;
 }
 
 .logout-btn{
-background:#f8fafc;
-border:1px solid #e2e8f0;
-padding:0.7rem 1.2rem;
-border-radius:1.8rem;
+background:#f1f5f9;
+border:none;
+padding:0.5rem 0.8rem;
+border-radius:1.2rem;
 cursor:pointer;
-transition: all 0.3s ease;
-font-size:0.95rem;
-font-weight:500;
+transition: all 0.2s ease;
+font-size:0.8rem;
 display:flex;
 align-items:center;
-gap:0.4rem;
-backdrop-filter: blur(10px);
+gap:0.3rem;
+font-weight:500;
 }
 
-.logout-btn:hover,
-.logout-btn:active{
+.logout-btn:hover{
 background:#e2e8f0;
-transform: translateY(-1px);
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
 }
 
 .header-top{
 display:flex;
 justify-content:space-between;
 align-items:center;
-margin-bottom:1.5rem;
+margin-bottom:1rem;
 flex-wrap:wrap;
-gap:1rem;
+gap:0.5rem;
+padding-bottom:0.8rem;
+border-bottom:1px solid #f1f5f9;
 }
 
 .title-section h1{
-font-size:1.8rem;
-font-weight:800;
+font-size:1.3rem;
+font-weight:700;
 margin:0;
-background:linear-gradient(135deg,#1e3a5f,#2c5a7a);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-background-clip:text;
+color:#1e3a5f;
 }
 
 .month-badge{
-background:linear-gradient(135deg,#f4f7fc,#e8ecf4);
-border-radius:35px;
-padding:0.6rem 1.2rem;
-font-weight:700;
-font-size:0.9rem;
-box-shadow:0 4px 15px rgba(0,0,0,0.08);
-border:1px solid rgba(255,255,255,0.5);
+background:#eff6ff;
+border-radius:20px;
+padding:0.3rem 0.8rem;
+font-weight:600;
+font-size:0.75rem;
+color:#1e40af;
 }
 
 .action-buttons{
 display:flex;
-gap:0.8rem;
-margin-bottom:1.5rem;
+gap:0.5rem;
+margin-bottom:1rem;
 flex-wrap:wrap;
 }
 
@@ -278,222 +254,167 @@ flex-wrap:wrap;
 background:linear-gradient(135deg,#1e3a5f,#2c5a7a);
 color:white;
 border:none;
-padding:1rem 1.5rem;
-border-radius:1.8rem;
+padding:0.8rem 1rem;
+border-radius:1.2rem;
 cursor:pointer;
-font-weight:700;
-font-size:1rem;
+font-weight:600;
+font-size:0.85rem;
 display:flex;
 align-items:center;
-gap:0.5rem;
-transition: all 0.3s ease;
+gap:0.3rem;
+transition: all 0.2s ease;
 flex:1;
-min-width:160px;
+min-width:120px;
 justify-content:center;
-box-shadow:0 4px 15px rgba(30,58,95,0.2);
-position:relative;
-overflow:hidden;
-}
-
-.action-btn::before{
-content:'';
-position:absolute;
-top:0;
-left:-100%;
-width:100%;
-height:100%;
-background:linear-gradient(90deg,transparent, rgba(255,255,255,0.2), transparent);
-transition: left 0.5s;
-}
-
-.action-btn:hover::before{
-left:100%;
 }
 
 .action-btn:hover,
 .action-btn:active{
-transform: translateY(-3px);
-box-shadow: 0 12px 25px rgba(30,58,95,0.4);
+transform: translateY(-1px);
+box-shadow:0 6px 15px rgba(30,58,95,0.3);
 }
 
 .action-btn.secondary{
-background:linear-gradient(135deg,#38a169,#2f855a);
-box-shadow:0 4px 15px rgba(56,161,105,0.3);
-}
-
-.action-btn.secondary:hover,
-.action-btn.secondary:active{
-box-shadow: 0 12px 25px rgba(56,161,105,0.5);
-}
-
-.action-btn i{
-font-size:1.1rem;
+background:linear-gradient(135deg,#10b981,#059669);
 }
 
 .stats-grid{
 display:grid;
-grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));
-gap:1rem;
-margin:2rem 0;
+grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));
+gap:0.8rem;
+margin:1rem 0;
 }
 
 .report-card{
-background:linear-gradient(135deg, #fff 0%, #fafbfc 100%);
-border-radius:1.5rem;
-padding:1.5rem;
-box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-transition: all 0.3s ease;
+background:white;
+border-radius:1rem;
+padding:0.8rem;
+box-shadow:0 4px 12px rgba(0,0,0,0.06);
+transition: all 0.2s ease;
 text-align:center;
-border:1px solid rgba(255,255,255,0.6);
-position:relative;
-overflow:hidden;
+border:1px solid #f1f5f9;
 }
 
-.report-card::before{
-content:'';
-position:absolute;
-top:0;
-left:0;
-right:0;
-height:3px;
-background:linear-gradient(90deg,#1e3a5f,#2c5a7a);
-}
-
-.report-card:hover,
-.report-card:active{
-transform: translateY(-5px);
-box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+.report-card:hover{
+transform: translateY(-2px);
+box-shadow:0 8px 20px rgba(0,0,0,0.12);
 }
 
 .report-title{
-font-size:0.95rem;
-color:#666;
-margin-bottom:0.5rem;
-font-weight:600;
-letter-spacing:0.3px;
+font-size:0.8rem;
+color:#64748b;
+margin-bottom:0.3rem;
+font-weight:500;
 }
 
 .report-number{
-font-size:2rem;
-font-weight:900;
-margin-bottom:0.8rem;
-line-height:1.2;
+font-size:1.4rem;
+font-weight:800;
+margin-bottom:0.4rem;
 }
 
-.report-card.present .report-number{ color:#2f855a; }
-.report-card.late .report-number{ color:#b4621a; }
-.report-card.absent .report-number{ color:#b13e3a; }
+.report-card.present .report-number{ color:#10b981; }
+.report-card.late .report-number{ color:#d97706; }
+.report-card.absent .report-number{ color:#ef4444; }
 
 .progress-bar-bg{
-background:#e2e8f0;
-height:8px;
-border-radius:25px;
-margin-top:12px;
-overflow:hidden;
+background:#e5e7eb;
+height:5px;
+border-radius:10px;
+margin-top:6px;
 }
 
 .progress-fill{
-background:linear-gradient(90deg,#2f855a,#48bb78);
+background:linear-gradient(90deg,#10b981,#34d399);
 height:100%;
 width:0%;
-border-radius:25px;
-transition: width 0.6s ease;
-box-shadow:0 0 10px rgba(47,133,90,0.3);
+border-radius:10px;
+transition: width 0.4s ease;
 }
 
 .attendance-table{
 width:100%;
 border-collapse:collapse;
 background:white;
-border-radius:1.5rem;
+border-radius:1rem;
 overflow:hidden;
-margin-top:1.5rem;
-box-shadow:0 8px 25px rgba(0,0,0,0.08);
+margin-top:1rem;
+box-shadow:0 4px 12px rgba(0,0,0,0.06);
+font-size:0.85rem;
 }
 
 .attendance-table th,
 .attendance-table td{
-padding:1rem 0.8rem;
-border-bottom:1px solid #f0f4f9;
+padding:0.7rem 0.5rem;
+border-bottom:1px solid #f8fafc;
 text-align:left;
 vertical-align:middle;
-font-size:0.95rem;
 }
 
 .attendance-table th{
-background:linear-gradient(135deg,#f8fafc,#f4f7fc);
-font-weight:700;
-color:#2c5a7a;
-font-size:0.9rem;
-letter-spacing:0.3px;
+background:#f8fafc;
+font-weight:600;
+color:#374151;
+font-size:0.8rem;
 }
 
 .attendance-table tr:hover{
-background:#f8fafc;
+background:#f9fafb;
 }
 
 .status-select{
-padding:0.7rem 1rem;
-border-radius:30px;
-border:2px solid #e0e7ff;
+padding:0.5rem 0.6rem;
+border-radius:20px;
+border:1px solid #d1d5db;
 font-family:'Inter',sans-serif;
 cursor:pointer;
-font-size:0.9rem;
-min-width:100px;
-font-weight:600;
-transition: all 0.3s ease;
+font-size:0.8rem;
+min-width:80px;
+font-weight:500;
 background:#fff;
 -webkit-appearance: none;
 -moz-appearance: none;
 appearance: none;
-background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
 background-repeat: no-repeat;
-background-position: right 0.8rem center;
-background-size: 1.1em;
-padding-right: 2.5rem;
+background-position: right 0.6rem center;
+background-size: 0.9rem;
+padding-right: 2rem;
+min-height:40px;
 }
 
 .status-select:focus{
 outline:none;
 border-color:#1e3a5f;
-box-shadow:0 0 0 3px rgba(30,58,95,0.1);
+box-shadow:0 0 0 2px rgba(30,58,95,0.1);
 }
 
 .photo-btn{
 background:linear-gradient(135deg,#1e3a5f,#2c5a7a);
 color:white;
 border:none;
-padding:0.7rem 1rem;
-border-radius:30px;
+padding:0.5rem 0.7rem;
+border-radius:20px;
 cursor:pointer;
-font-size:0.9rem;
-transition: all 0.3s ease;
+font-size:0.75rem;
+transition: all 0.2s ease;
 width:100%;
-font-weight:600;
+font-weight:500;
+min-height:36px;
 }
 
-.photo-btn:hover,
-.photo-btn:active{
+.photo-btn:hover{
 background:linear-gradient(135deg,#2c5a7a,#1e3a5f);
-transform: translateY(-1px);
-box-shadow:0 5px 15px rgba(30,58,95,0.3);
-}
-
-.photo-btn.disabled{
-background:#ccc;
-cursor:not-allowed;
-pointer-events:none;
 }
 
 .photo-preview{
-width:55px;
-height:55px;
-border-radius:12px;
+width:45px;
+height:45px;
+border-radius:8px;
 object-fit:cover;
-border:3px solid #dbe7f3;
+border:2px solid #e5e7eb;
 display:block;
-margin:0.5rem auto 0;
-box-shadow:0 4px 12px rgba(0,0,0,0.1);
+margin:0.3rem auto 0;
 }
 
 .hidden-input{
@@ -501,18 +422,17 @@ display:none;
 }
 
 .no-photo-needed{
-color:#666;
-font-size:0.85rem;
+color:#6b7280;
+font-size:0.7rem;
 font-weight:500;
-font-style:italic;
 text-align:center;
-padding:1rem 0.5rem;
-line-height:1.4;
+padding:0.6rem 0.3rem;
+line-height:1.3;
 }
 
 .no-photo-needed i{
-margin-right:0.4rem;
-color:#38a169;
+margin-right:0.2rem;
+color:#10b981;
 }
 
 /* Analytics Modal */
@@ -522,16 +442,15 @@ top:0;
 left:0;
 width:100%;
 height:100%;
-background:rgba(0,0,0,0.6);
-backdrop-filter: blur(5px);
+background:rgba(0,0,0,0.5);
 display:flex;
 align-items:center;
 justify-content:center;
 z-index:1000;
 opacity:0;
 visibility:hidden;
-transition: all 0.3s ease;
-padding:1rem;
+transition: all 0.2s ease;
+padding:0.5rem;
 }
 
 .modal-overlay.active{
@@ -541,303 +460,203 @@ visibility:visible;
 
 .modal-content{
 background:white;
-border-radius:2rem;
-padding:2rem;
+border-radius:1.2rem;
+padding:1.2rem;
 max-width:95vw;
 width:95vw;
 max-height:90vh;
 overflow-y:auto;
-transform: scale(0.9) translateY(20px);
-transition: all 0.3s ease;
-box-shadow:0 30px 60px rgba(0,0,0,0.3);
-border:1px solid rgba(255,255,255,0.2);
+transform: scale(0.95);
+transition: all 0.2s ease;
+box-shadow:0 20px 40px rgba(0,0,0,0.25);
 }
 
 .modal-overlay.active .modal-content{
-transform: scale(1) translateY(0);
+transform: scale(1);
 }
 
 .modal-header{
 display:flex;
 justify-content:space-between;
 align-items:center;
-margin-bottom:1.5rem;
-padding-bottom:1.2rem;
-border-bottom:2px solid #f0f4f9;
-flex-wrap:wrap;
-gap:0.8rem;
+margin-bottom:1rem;
+padding-bottom:0.8rem;
+border-bottom:1px solid #f1f5f9;
+gap:0.5rem;
 }
 
 .modal-header h2{
-font-size:1.5rem;
+font-size:1.1rem;
 color:#1e3a5f;
 margin:0;
-font-weight:700;
+font-weight:600;
 flex:1;
 }
 
 .close-modal{
 background:none;
 border:none;
-font-size:1.8rem;
+font-size:1.4rem;
 cursor:pointer;
-color:#999;
-transition: all 0.3s ease;
-flex-shrink:0;
-padding:0.5rem;
+color:#9ca3af;
+transition: all 0.2s ease;
+padding:0.3rem;
 border-radius:50%;
-width:40px;
-height:40px;
+width:36px;
+height:36px;
 display:flex;
 align-items:center;
 justify-content:center;
+flex-shrink:0;
 }
 
-.close-modal:hover,
-.close-modal:active{
+.close-modal:hover{
 color:#1e3a5f;
-background:#f0f4f9;
-transform: scale(1.1);
+background:#f3f4f6;
 }
 
 .analytics-grid{
 display:grid;
 grid-template-columns:1fr;
-gap:1.5rem;
+gap:1rem;
 }
 
 .chart-container{
-background:linear-gradient(135deg, #f8fafc 0%, #f4f7fc 100%);
-border-radius:1.5rem;
-padding:1.5rem;
+background:#f8fafc;
+border-radius:1rem;
+padding:1rem;
 text-align:center;
-border:1px solid rgba(255,255,255,0.5);
+border:1px solid #e5e7eb;
 }
 
 .chart-container h3{
-margin-bottom:1rem;
-color:#2c5a7a;
-font-size:1.1rem;
-font-weight:700;
+margin-bottom:0.8rem;
+color:#374151;
+font-size:0.95rem;
+font-weight:600;
 }
 
 .pie-chart-wrapper{
-max-width:300px;
+max-width:260px;
 margin:0 auto;
 width:100%;
-height:280px;
+height:220px;
 }
 
-/* Health Bar */
 .health-bar-container{
-background:linear-gradient(135deg, #f8fafc 0%, #f4f7fc 100%);
-border-radius:1.5rem;
-padding:1.5rem;
-border:1px solid rgba(255,255,255,0.5);
+background:#f8fafc;
+border-radius:1rem;
+padding:1rem;
+border:1px solid #e5e7eb;
 }
 
 .health-bar-container h3{
-margin-bottom:1rem;
-color:#2c5a7a;
-font-size:1.1rem;
-font-weight:700;
+margin-bottom:0.8rem;
+color:#374151;
+font-size:0.95rem;
+font-weight:600;
 }
 
 .health-bar{
-height:30px;
-background:#e2e8f0;
-border-radius:25px;
+height:22px;
+background:#e5e7eb;
+border-radius:11px;
 overflow:hidden;
-position:relative;
-margin-bottom:1rem;
-box-shadow:inset 0 2px 4px rgba(0,0,0,0.05);
+margin-bottom:0.8rem;
 }
 
 .health-fill{
 height:100%;
-border-radius:25px;
-transition: all 0.6s ease;
+border-radius:11px;
+transition: all 0.4s ease;
 display:flex;
 align-items:center;
 justify-content:center;
 color:white;
-font-weight:800;
-font-size:1rem;
-text-shadow:0 1px 2px rgba(0,0,0,0.3);
+font-weight:700;
+font-size:0.8rem;
 }
 
-.health-fill.excellent{
-background:linear-gradient(90deg,#38a169,#48bb78);
-}
-
-.health-fill.good{
-background:linear-gradient(90deg,#68d391,#9ae6b4);
-}
-
-.health-fill.warning{
-background:linear-gradient(90deg,#ecc94b,#f6e05e);
-}
-
-.health-fill.danger{
-background:linear-gradient(90deg,#e53e3e,#fc8181);
-}
+.health-fill.excellent{ background:linear-gradient(90deg,#10b981,#34d399); }
+.health-fill.good{ background:linear-gradient(90deg,#6ee7b7,#a7f3d0); }
+.health-fill.warning{ background:linear-gradient(90deg,#f59e0b,#fbbf24); }
+.health-fill.danger{ background:linear-gradient(90deg,#ef4444,#f87171); }
 
 .health-status{
-margin-top:1rem;
-display:flex;
-flex-direction:column;
-gap:0.5rem;
 text-align:center;
 }
 
 .health-label{
-font-weight:800;
-font-size:1.2rem;
+font-weight:700;
+font-size:0.95rem;
+margin-bottom:0.2rem;
+display:block;
 }
 
 .health-description{
-color:#666;
-font-size:0.95rem;
-font-weight:500;
+color:#6b7280;
+font-size:0.8rem;
 }
 
-/* Statistics Summary */
 .stats-summary{
-background:linear-gradient(135deg, #f8fafc 0%, #f4f7fc 100%);
-border-radius:1.5rem;
-padding:1.5rem;
-border:1px solid rgba(255,255,255,0.5);
+background:#f8fafc;
+border-radius:1rem;
+padding:1rem;
+border:1px solid #e5e7eb;
 }
 
 .stats-summary h3{
-margin-bottom:1rem;
-color:#2c5a7a;
-font-size:1.1rem;
-font-weight:700;
+margin-bottom:0.8rem;
+color:#374151;
+font-size:0.95rem;
+font-weight:600;
 }
 
 .summary-grid{
 display:grid;
-grid-template-columns:repeat(auto-fit, minmax(120px, 1fr));
-gap:1rem;
+grid-template-columns:repeat(auto-fit, minmax(100px, 1fr));
+gap:0.6rem;
 }
 
 .summary-item{
 background:white;
-padding:1rem 0.8rem;
-border-radius:1.3rem;
+padding:0.6rem 0.4rem;
+border-radius:0.8rem;
 text-align:center;
-box-shadow:0 4px 15px rgba(0,0,0,0.06);
-transition: all 0.3s ease;
-}
-
-.summary-item:hover{
-transform: translateY(-2px);
-box-shadow:0 8px 25px rgba(0,0,0,0.12);
+border:1px solid #f1f5f9;
 }
 
 .summary-item .value{
-font-size:1.6rem;
-font-weight:900;
-margin-bottom:0.3rem;
-line-height:1.2;
+font-size:1.2rem;
+font-weight:800;
+margin-bottom:0.1rem;
 }
 
 .summary-item .label{
-color:#666;
-font-size:0.9rem;
+color:#6b7280;
+font-size:0.75rem;
 margin:0;
-font-weight:600;
-letter-spacing:0.2px;
+font-weight:500;
 }
 
-.summary-item.present .value{ color:#2f855a; }
-.summary-item.late .value{ color:#b4621a; }
-.summary-item.absent .value{ color:#b13e3a; }
+.summary-item.present .value{ color:#10b981; }
+.summary-item.late .value{ color:#d97706; }
+.summary-item.absent .value{ color:#ef4444; }
 
-/* Mobile Specific */
-@media(max-width:768px){
+/* Mobile First - Enhanced */
+@media(min-width:769px){
 body{
-padding:0.8rem;
+padding:1rem 1.5rem;
 }
 
 .dashboard{
-padding:1.2rem;
-border-radius:1.5rem;
-margin:0.5rem;
+max-width:1100px;
+padding:1.5rem;
+margin:1rem auto;
 }
 
 .profile-section{
-flex-direction:column;
-text-align:center;
-gap:1.2rem;
-padding:1.5rem;
-}
-
-.profile-info{
-justify-content:center;
-}
-
-.action-buttons{
-flex-direction:column;
-}
-
-.action-btn{
-width:100%;
-padding:1.2rem;
-font-size:1.1rem;
-min-width:unset;
-}
-
-.stats-grid{
-grid-template-columns:repeat(2, 1fr);
-gap:0.8rem;
-}
-
-.attendance-table{
-font-size:0.9rem;
-}
-
-.attendance-table th,
-.attendance-table td{
-padding:0.8rem 0.6rem;
-}
-
-.photo-preview{
-width:50px;
-height:50px;
-}
-
-.modal-content{
-margin:0.5rem;
-padding:1.5rem;
-width:calc(100vw - 1rem);
-border-radius:1.5rem;
-}
-
-.summary-grid{
-grid-template-columns:repeat(2, 1fr);
-gap:0.8rem;
-}
-
-.login-form{
-padding:1.5rem 1.2rem 1.2rem;
-}
-
-.login-header{
-padding:1.8rem 1.2rem;
-}
-
-.form-group select,
-.form-group input{
-padding:1rem 1.1rem;
-font-size:1rem;
-}
-}
-
-@media(max-width:480px){
-.title-section h1{
-font-size:1.5rem;
+padding:1rem 1.2rem;
 }
 
 .profile-avatar{
@@ -846,9 +665,24 @@ height:45px;
 font-size:1.3rem;
 }
 
+.profile-name{
+font-size:1rem;
+}
+
+.title-section h1{
+font-size:1.6rem;
+}
+
+.action-btn{
+font-size:0.9rem;
+padding:0.9rem 1.2rem;
+min-width:140px;
+}
+
 .stats-grid{
-grid-template-columns:1fr;
+grid-template-columns:repeat(auto-fit, minmax(150px, 1fr));
 gap:1rem;
+margin:1.5rem 0;
 }
 
 .report-number{
@@ -857,37 +691,51 @@ font-size:1.7rem;
 
 .attendance-table th,
 .attendance-table td{
-padding:0.7rem 0.5rem;
-font-size:0.85rem;
+padding:0.8rem 0.7rem;
+font-size:0.9rem;
 }
 
 .status-select{
 font-size:0.85rem;
 padding:0.6rem 0.8rem;
-min-width:95px;
 }
 
-.login-header h2{
-font-size:1.2rem;
+.photo-preview{
+width:50px;
+height:50px;
+}
+
+.login-container{
+max-width:450px;
+margin:5vh auto;
+}
+
+.login-header{
+padding:1.8rem 1.5rem;
 }
 
 .login-header i{
 font-size:2.5rem;
 }
 
-.action-btn{
-padding:1.1rem 1.2rem;
-font-size:1rem;
+.login-form{
+padding:1.8rem 1.5rem;
+}
+
+.modal-content{
+padding:1.8rem;
+max-width:800px;
+width:90vw;
 }
 }
 
-@media(max-width:360px){
+@media(min-width:1024px){
+.title-section h1{
+font-size:1.8rem;
+}
+
 .stats-grid{
-grid-template-columns:1fr;
-}
-
-.summary-grid{
-grid-template-columns:1fr;
+grid-template-columns:repeat(4, 1fr);
 }
 }
 </style>
@@ -897,25 +745,25 @@ grid-template-columns:1fr;
 <div id="loginContainer" class="login-container">
 <div class="login-header">
 <i class="fas fa-clipboard-list"></i>
-<h2>ATTENDANCE MONITOR</h2>
+<h2>ATTENDANCE</h2>
 </div>
 
 <div class="login-form">
 <div class="form-group">
-<label>Select your profile</label>
+<label>Profile</label>
 <select id="memberSelect">
-<option value="">-- choose member --</option>
+<option value="">Choose member</option>
 </select>
 </div>
 
 <div class="form-group">
 <label>Passcode</label>
-<input type="password" id="loginPassword" value="demo" placeholder="Enter passcode">
+<input type="password" id="loginPassword" value="demo" placeholder="demo">
 </div>
 
 <button id="doLoginBtn" class="login-btn">
 <i class="fas fa-arrow-right"></i>
-Enter Dashboard
+Enter
 </button>
 <div id="loginError"></div>
 </div>
@@ -931,38 +779,37 @@ Enter Dashboard
 </div>
 <div>
 <h3 class="profile-name" id="profileName">Member Name</h3>
-<p class="profile-code">MAWD - 203</p>
+<p class="profile-code">MAWD-203</p>
 </div>
 </div>
 
-<div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+<div style="display:flex;gap:8px;align-items:center;">
 <div id="profileStatusBadge" class="attendance-badge present">Admin</div>
-<button id="logoutButton" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+<button id="logoutButton" class="logout-btn"><i class="fas fa-sign-out-alt"></i></button>
 </div>
 </div>
 
 <div class="header-top">
 <div class="title-section">
-<h1>ATTENDANCE MONITOR</h1>
+<h1>ATTENDANCE</h1>
 </div>
-<div class="month-badge"><i class="fas fa-calendar-alt"></i> APRIL 2026</div>
+<div class="month-badge"><i class="fas fa-calendar-alt"></i> APR 2026</div>
 </div>
 
-<!-- Action Buttons -->
 <div class="action-buttons">
 <button id="analyticsBtn" class="action-btn">
 <i class="fas fa-chart-pie"></i>
-View Analytics
+Analytics
 </button>
 <button id="exportBtn" class="action-btn secondary">
 <i class="fas fa-download"></i>
-Export Report
+Export
 </button>
 </div>
 
 <div class="stats-grid">
 <div class="report-card">
-<h3 class="report-title">TOTAL MEMBERS</h3>
+<h3 class="report-title">TOTAL</h3>
 <div class="report-number" id="totalMembers">9</div>
 </div>
 
@@ -988,9 +835,9 @@ Export Report
 <table class="attendance-table">
 <thead>
 <tr>
-<th>Member Name</th>
+<th>Name</th>
 <th>Status</th>
-<th>Proof Photo</th>
+<th>Photo</th>
 </tr>
 </thead>
 <tbody id="tableBody"></tbody>
@@ -1003,22 +850,20 @@ Export Report
 <div id="analyticsModal" class="modal-overlay">
 <div class="modal-content">
 <div class="modal-header">
-<h2><i class="fas fa-chart-line"></i> Attendance Analytics</h2>
+<h2><i class="fas fa-chart-line"></i> Analytics</h2>
 <button class="close-modal" id="closeModal">&times;</button>
 </div>
 
 <div class="analytics-grid">
-<!-- Pie Chart -->
 <div class="chart-container">
-<h3><i class="fas fa-chart-pie"></i> Attendance Distribution</h3>
+<h3><i class="fas fa-chart-pie"></i> Distribution</h3>
 <div class="pie-chart-wrapper">
 <canvas id="attendancePieChart"></canvas>
 </div>
 </div>
 
-<!-- Health Bar -->
 <div class="health-bar-container">
-<h3><i class="fas fa-heartbeat"></i> Attendance Health</h3>
+<h3><i class="fas fa-heartbeat"></i> Health</h3>
 <div class="health-bar">
 <div class="health-fill" id="healthFill">0%</div>
 </div>
@@ -1029,9 +874,8 @@ Export Report
 </div>
 </div>
 
-<!-- Statistics Summary -->
 <div class="stats-summary">
-<h3><i class="fas fa-clipboard-list"></i> Detailed Statistics</h3>
+<h3><i class="fas fa-list"></i> Stats</h3>
 <div class="summary-grid">
 <div class="summary-item present">
 <div class="value" id="summaryPresent">0</div>
@@ -1047,7 +891,7 @@ Export Report
 </div>
 <div class="summary-item">
 <div class="value" id="summaryRate">0%</div>
-<div class="label">Attendance Rate</div>
+<div class="label">Rate</div>
 </div>
 </div>
 </div>
@@ -1079,7 +923,7 @@ const analyticsModal = document.getElementById("analyticsModal");
 const loginError = document.getElementById("loginError");
 
 function populateMemberSelect(){
-memberSelect.innerHTML = '<option value="">-- choose member --</option>';
+memberSelect.innerHTML = '<option value="">Choose member</option>';
 members.forEach((member,index)=>{
 const option = document.createElement("option");
 option.value = index;
@@ -1088,62 +932,42 @@ memberSelect.appendChild(option);
 });
 }
 
-function getStatusClass(status){
-if(status === "Present") return "present";
-if(status === "Absent") return "absent";
-if(status === "Late") return "late";
-return "";
-}
-
 function getAttendanceCounts(){
-let present = 0;
-let absent = 0;
-let late = 0;
-
+let present = 0, absent = 0, late = 0;
 attendanceStatus.forEach(status=>{
 if(status === "Present") present++;
 if(status === "Absent") absent++;
 if(status === "Late") late++;
 });
-
 return { present, absent, late, total: members.length };
 }
 
 function updateStats(){
 const counts = getAttendanceCounts();
-
 document.getElementById("presentCount").innerText = counts.present;
 document.getElementById("absentCount").innerText = counts.absent;
 document.getElementById("lateCount").innerText = counts.late;
 document.getElementById("totalMembers").innerText = counts.total;
-
-const rate = Math.round((counts.present / counts.total) * 100);
-document.getElementById("presentProgress").style.width = rate + "%";
+document.getElementById("presentProgress").style.width = Math.round((counts.present / counts.total) * 100) + "%";
 }
 
 function updatePieChart(){
 const counts = getAttendanceCounts();
 const ctx = document.getElementById('attendancePieChart').getContext('2d');
-
 if(pieChart){
 pieChart.data.datasets[0].data = [counts.present, counts.late, counts.absent];
 pieChart.update('none');
 return;
 }
-
 pieChart = new Chart(ctx, {
 type: 'doughnut',
 data: {
 labels: ['Present', 'Late', 'Absent'],
 datasets: [{
 data: [counts.present, counts.late, counts.absent],
-backgroundColor: [
-'#38a169',
-'#ecc94b',
-'#e53e3e'
-],
+backgroundColor: ['#10b981','#f59e0b','#ef4444'],
 borderWidth: 0,
-hoverOffset: 10
+hoverOffset: 8
 }]
 },
 options: {
@@ -1152,15 +976,7 @@ maintainAspectRatio: false,
 plugins: {
 legend: {
 position: 'bottom',
-labels: {
-padding: 20,
-usePointStyle: true,
-font: {
-family: 'Inter',
-size: 12,
-weight: '600'
-}
-}
+labels: { padding: 12, font: { size: 11 } }
 }
 },
 cutout: '65%'
@@ -1171,44 +987,38 @@ cutout: '65%'
 function updateHealthBar(){
 const counts = getAttendanceCounts();
 const healthPercent = Math.round(((counts.present + (counts.late * 0.5)) / counts.total) * 100);
-  
 const healthFill = document.getElementById('healthFill');
 const healthLabel = document.getElementById('healthLabel');
 const healthDescription = document.getElementById('healthDescription');
-
 healthFill.style.width = healthPercent + '%';
 healthFill.innerText = healthPercent + '%';
-
-// Remove all classes
-healthFill.classList.remove('excellent', 'good', 'warning', 'danger');
-
+healthFill.className = 'health-fill';
 if(healthPercent >= 90){
 healthFill.classList.add('excellent');
 healthLabel.innerText = 'Excellent';
-healthLabel.style.color = '#38a169';
-healthDescription.innerText = 'Outstanding attendance!';
+healthLabel.style.color = '#10b981';
+healthDescription.innerText = 'Outstanding!';
 } else if(healthPercent >= 75){
 healthFill.classList.add('good');
 healthLabel.innerText = 'Good';
-healthLabel.style.color = '#68d391';
-healthDescription.innerText = 'Keep up the good work!';
+healthLabel.style.color = '#6ee7b7';
+healthDescription.innerText = 'Great work!';
 } else if(healthPercent >= 50){
 healthFill.classList.add('warning');
-healthLabel.innerText = 'Needs Improvement';
-healthLabel.style.color = '#ecc94b';
-healthDescription.innerText = 'Attendance could be better.';
+healthLabel.innerText = 'Fair';
+healthLabel.style.color = '#f59e0b';
+healthDescription.innerText = 'Room to improve';
 } else {
 healthFill.classList.add('danger');
-healthLabel.innerText = 'Critical';
-healthLabel.style.color = '#e53e3e';
-healthDescription.innerText = 'Immediate attention required!';
+healthLabel.innerText = 'Poor';
+healthLabel.style.color = '#ef4444';
+healthDescription.innerText = 'Needs attention';
 }
 }
 
 function updateAnalyticsSummary(){
 const counts = getAttendanceCounts();
 const rate = Math.round((counts.present / counts.total) * 100);
-
 document.getElementById('summaryPresent').innerText = counts.present;
 document.getElementById('summaryLate').innerText = counts.late;
 document.getElementById('summaryAbsent').innerText = counts.absent;
@@ -1229,76 +1039,56 @@ document.body.style.overflow = 'auto';
 }
 
 function updatePhotoSection(photoCell, index, status) {
-  // Clear existing content
-  photoCell.innerHTML = '';
-  
-  if (status === 'Absent') {
-    // Show "No photo needed" message for absent
-    const noPhotoDiv = document.createElement('div');
-    noPhotoDiv.className = 'no-photo-needed';
-    noPhotoDiv.innerHTML = '<i class="fas fa-check-circle"></i> No photo required';
-    photoCell.appendChild(noPhotoDiv);
-  } else {
-    // Show photo upload functionality for Present/Late
-    const input = document.createElement("input");
-    input.type = "file";
-    input.accept = "image/*";
-    input.capture = "environment";
-    input.className = "hidden-input";
-    input.id = "photoInput" + index;
+photoCell.innerHTML = '';
+if (status === 'Absent') {
+const noPhotoDiv = document.createElement('div');
+noPhotoDiv.className = 'no-photo-needed';
+noPhotoDiv.innerHTML = '<i class="fas fa-check-circle"></i>No photo';
+photoCell.appendChild(noPhotoDiv);
+} else {
+const input = document.createElement("input");
+input.type = "file"; input.accept = "image/*"; input.capture = "environment";
+input.className = "hidden-input"; input.id = "photoInput" + index;
 
-    const button = document.createElement("button");
-    button.className = "photo-btn";
-    button.innerHTML = attendancePhotos[index] ? '<i class="fas fa-redo"></i> Retake' : '<i class="fas fa-camera"></i> Capture';
+const button = document.createElement("button");
+button.className = "photo-btn";
+button.innerHTML = attendancePhotos[index] ? '<i class="fas fa-redo"></i>Retake' : '<i class="fas fa-camera"></i>Capture';
+button.onclick = () => input.click();
 
-    button.onclick = () => {
-      input.click();
-    };
+const preview = document.createElement("img");
+preview.className = "photo-preview";
+if(attendancePhotos[index]){ preview.src = attendancePhotos[index]; preview.style.display = "block"; }
 
-    const preview = document.createElement("img");
-    preview.className = "photo-preview";
+input.addEventListener("change",(e)=>{
+const file = e.target.files[0];
+if(file){
+const reader = new FileReader();
+reader.onload = (event)=>{
+attendancePhotos[index] = event.target.result;
+preview.src = event.target.result;
+preview.style.display = "block";
+button.innerHTML = '<i class="fas fa-redo"></i>Retake';
+};
+reader.readAsDataURL(file);
+}
+});
 
-    if(attendancePhotos[index]){
-      preview.src = attendancePhotos[index];
-      preview.style.display = "block";
-    } else {
-      preview.style.display = "none";
-    }
-
-    input.addEventListener("change",(e)=>{
-      const file = e.target.files[0];
-      if(file){
-        const reader = new FileReader();
-        reader.onload = function(event){
-          attendancePhotos[index] = event.target.result;
-          preview.src = event.target.result;
-          preview.style.display = "block";
-          button.innerHTML = '<i class="fas fa-redo"></i> Retake';
-        };
-        reader.readAsDataURL(file);
-      }
-    });
-
-    photoCell.appendChild(button);
-    photoCell.appendChild(input);
-    photoCell.appendChild(preview);
-  }
+photoCell.appendChild(button);
+photoCell.appendChild(input);
+photoCell.appendChild(preview);
+}
 }
 
 function renderAttendanceTable(){
 const tbody = document.getElementById("tableBody");
 tbody.innerHTML = "";
-
 members.forEach((member,index)=>{
 const row = tbody.insertRow();
-
-const nameCell = row.insertCell(0);
-nameCell.innerHTML = member.fullName;
+row.insertCell(0).innerHTML = member.fullName;
 
 const statusCell = row.insertCell(1);
 const select = document.createElement("select");
 select.className = "status-select";
-
 ["Present","Absent","Late"].forEach(status=>{
 const option = document.createElement("option");
 option.value = status;
@@ -1306,114 +1096,59 @@ option.textContent = status;
 if(status === attendanceStatus[index]) option.selected = true;
 select.appendChild(option);
 });
-
 select.addEventListener("change",(e)=>{
 attendanceStatus[index] = e.target.value;
 updateStats();
-  
-  // Update photo section based on new status
-  const photoCell = row.cells[2];
-  updatePhotoSection(photoCell, index, e.target.value);
+updatePhotoSection(row.cells[2], index, e.target.value);
 });
-
 statusCell.appendChild(select);
 
 const photoCell = row.insertCell(2);
-
-// Initialize photo section based on current status
 updatePhotoSection(photoCell, index, attendanceStatus[index]);
-
 });
-
 updateStats();
 }
 
 function exportReport(){
 const counts = getAttendanceCounts();
-const rate = Math.round((counts.present / counts.total) * 100);
-  
-let report = "ATTENDANCE REPORT - APRIL 2026\n";
-report += "================================\n\n";
-report += "Summary:\n";
-report += `Total Members: ${counts.total}\n`;
-report += `Present: ${counts.present}\n`;
-report += `Late: ${counts.late}\n`;
-report += `Absent: ${counts.absent}\n`;
-report += `Attendance Rate: ${rate}%\n\n`;
-report += "Details:\n";
-report += "--------------------------------\n";
-  
+let report = "ATTENDANCE REPORT - APR 2026\n================================\n\n";
+report += `Total: ${counts.total} | Present: ${counts.present} | Late: ${counts.late} | Absent: ${counts.absent}\n\n`;
 members.forEach((member, index) => {
-const photoStatus = attendancePhotos[index] ? ' (Photo taken)' : '';
-report += `${member.fullName}: ${attendanceStatus[index]}${photoStatus}\n`;
+report += `${member.fullName}: ${attendanceStatus[index]}${attendancePhotos[index] ? ' ✓' : ''}\n`;
 });
-
 const blob = new Blob([report], { type: 'text/plain' });
 const url = URL.createObjectURL(blob);
 const a = document.createElement('a');
-a.href = url;
-a.download = 'attendance-report.txt';
-a.click();
+a.href = url; a.download = 'attendance.txt'; a.click();
 URL.revokeObjectURL(url);
 }
 
 function handleLogin(){
 const selected = memberSelect.value;
 const password = document.getElementById("loginPassword").value;
-
-if(selected === "") {
-  loginError.innerText = "Please select a member";
-  return;
-}
-
-if(password !== "demo") {
-  loginError.innerText = "Invalid passcode";
-  return;
-}
-
+if(selected === "") { loginError.innerText = "Select member"; return; }
+if(password !== "demo") { loginError.innerText = "Wrong passcode"; return; }
 loginError.innerText = "";
 currentLoggedInUser = parseInt(selected);
 document.getElementById("profileName").innerText = members[selected].fullName;
-document.getElementById("profileStatusBadge").textContent = "Admin";
-document.getElementById("profileStatusBadge").className = "attendance-badge present";
-
 loginContainer.style.display = "none";
 dashboardApp.style.display = "block";
-
 renderAttendanceTable();
 }
 
-// Event Listeners
+// Events
 document.getElementById("doLoginBtn").addEventListener("click",handleLogin);
-
 document.getElementById("logoutButton").addEventListener("click",()=>{
 dashboardApp.style.display = "none";
 loginContainer.style.display = "block";
-currentLoggedInUser = null;
-memberSelect.value = "";
-document.getElementById("loginPassword").value = "demo";
+memberSelect.value = ""; document.getElementById("loginPassword").value = "demo";
 loginError.innerText = "";
 });
-
 document.getElementById("analyticsBtn").addEventListener("click", openAnalyticsModal);
 document.getElementById("closeModal").addEventListener("click", closeAnalyticsModal);
 document.getElementById("exportBtn").addEventListener("click", exportReport);
-
-analyticsModal.addEventListener("click", (e) => {
-if(e.target === analyticsModal){
-closeAnalyticsModal();
-}
-});
-
-// Close modal with Escape key
-document.addEventListener("keydown", (e) => {
-if(e.key === "Escape" && analyticsModal.classList.contains("active")){
-closeAnalyticsModal();
-}
-});
-
-// Prevent zoom on iOS
-document.addEventListener('touchstart', function() {}, true);
+analyticsModal.addEventListener("click", (e) => { if(e.target === analyticsModal) closeAnalyticsModal(); });
+document.addEventListener("keydown", (e) => { if(e.key === "Escape" && analyticsModal.classList.contains("active")) closeAnalyticsModal(); });
 
 populateMemberSelect();
 </script>
