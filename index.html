@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Attendance Monitor · Login & Profile | Team Dashboard</title>
+    <title>Attendance Monitor</title>
     <!-- Google Fonts & Font Awesome -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -327,13 +327,12 @@
     <div class="login-header">
         <i class="fas fa-clipboard-list"></i>
         <h2>ATTENDANCE MONITOR</h2>
-        <p>Team access · based on photo roster</p>
     </div>
     <div class="login-form">
         <div class="form-group">
             <label><i class="fas fa-user-circle"></i> Select your profile</label>
             <select id="memberSelect">
-                <option value="">-- choose member from photo --</option>
+                <option value="">-- choose member --</option>
             </select>
         </div>
         <div class="form-group">
@@ -343,7 +342,7 @@
         <button id="doLoginBtn" class="login-btn"><i class="fas fa-sign-in-alt"></i> Enter Dashboard</button>
         <div id="loginError" class="error-msg"></div>
         <div style="margin-top: 1rem; text-align: center; font-size: 0.8rem; color: #6b7c8f;">
-            <i class="fas fa-info-circle"></i> Choose any name from the team (Fernandez, Gaspap, Guizon, Pajo, Pascua, Mangallman, Nido)
+            <i class="fas fa-info-circle"></i> Choose any name from the team ( Garcia, Arwil, Fernandez, Gaspar, Guizon, Pajo, Pascua, Mangaliman, Nido)
         </div>
     </div>
 </div>
@@ -359,12 +358,12 @@
                 </div>
                 <div class="profile-details">
                     <h3 id="profileName">Member Name</h3>
-                    <p><i class="fas fa-users"></i> Group 1 · <span id="profileRole">Team Member</span></p>
+                    <p><i class="fas fa-users"></i> MAWD - 203 · <span id="profileRole">Team Member</span></p>
                 </div>
             </div>
             <div style="display: flex; gap: 12px; align-items: center;">
                 <div id="profileStatusBadge" class="attendance-badge">Present</div>
-                <button id="logoutButton" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                <button id="logoutButton" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout </button>
             </div>
         </div>
 
@@ -395,7 +394,7 @@
 
         <!-- REPORT stats -->
         <div class="stats-grid">
-            <div class="report-card"><h3><i class="fas fa-chalkboard-user"></i> TOTAL MEMBERS</h3><div class="report-number" id="totalMembers">7</div><div class="report-detail">Active team</div></div>
+            <div class="report-card"><h3><i class="fas fa-chalkboard-user"></i> TOTAL MEMBERS</h3><div class="report-number" id="totalMembers">9</div><div class="report-detail">Active team</div></div>
             <div class="report-card"><h3><i class="fas fa-check-circle"></i> PRESENT</h3><div class="report-number" id="presentCount">0</div><div class="progress-bar-bg"><div class="progress-fill" id="presentProgress"></div></div><div class="report-detail">attendance rate</div></div>
             <div class="report-card"><h3><i class="fas fa-clock"></i> LATE</h3><div class="report-number" id="lateCount">0</div></div>
             <div class="report-card"><h3><i class="fas fa-user-slash"></i> ABSENT</h3><div class="report-number" id="absentCount">0</div><div id="absentNamesList" class="absent-list">—</div></div>
@@ -404,7 +403,7 @@
         <!-- Attendance table: Surname, Name + M.N -->
         <div class="table-wrapper">
             <table class="attendance-table" id="attendanceTable">
-                <thead><tr><th><i class="fas fa-user-edit"></i> Surname, Name (Member)</th><th><i class="fas fa-pen-alt"></i> M.N · Attendance mark</th></tr></thead>
+                <thead><tr><th><i class="fas fa-user-edit"></i> Surname, Name (Member)</th><th><i class="fas fa-pen-alt"></i> Attendance mark</th></tr></thead>
                 <tbody id="tableBody"></tbody>
             </table>
         </div>
@@ -414,20 +413,22 @@
             <button class="btn-sm" id="resetAllAbsentBtn"><i class="fas fa-ban"></i> Set all Absent</button>
             <button class="btn-sm btn-primary" id="refreshReportBtn"><i class="fas fa-chart-simple"></i> Refresh report</button>
         </div>
-        <div class="footer-note"><i class="far fa-calendar-check"></i> Attendance monitor · April 2026 · based on original photo roster</div>
+        <div class="footer-note"><i class="far fa-calendar-check"></i> Attendance monitor · April 2026 </div>
     </div>
 </div>
 
 <script>
     // ---------- MEMBER DATA (exactly as from photo) ----------
     const members = [
-        { fullName: "Fernandez, R.", defaultStatus: "Present" },
-        { fullName: "Gaspap, Star", defaultStatus: "Present" },
-        { fullName: "Guizon, Nico", defaultStatus: "Present" },
+        { fullName: "Dayag, Arwil", defaultStatus: "Present" },
+        { fullName: "Gacia, Aira", defaultStatus: "Present" },
+        { fullName: "Fernandez, Rhian", defaultStatus: "Present" },
+        { fullName: "Gaspap, Stanly", defaultStatus: "Present" },
+        { fullName: "Guizon, Nicole", defaultStatus: "Present" },
         { fullName: "Pajo, Darren", defaultStatus: "Present" },
-        { fullName: "Pascua, John", defaultStatus: "Present" },
-        { fullName: "Mangallman", defaultStatus: "Present" },
-        { fullName: "Nido, Briann", defaultStatus: "Present" }
+        { fullName: "Pascua, John Louis", defaultStatus: "Present" },
+        { fullName: "Mangaliman", defaultStatus: "Present" },
+        { fullName: "Nido, Brianna", defaultStatus: "Present" }
     ];
 
     let attendanceStatus = members.map(m => m.defaultStatus);   // "Present", "Absent", "Late"
@@ -445,7 +446,7 @@
     
     // Helper: populate login dropdown with members (based on photo)
     function populateMemberSelect() {
-        memberSelect.innerHTML = '<option value="">-- choose member from photo --</option>';
+        memberSelect.innerHTML = '<option value="">-- choose member --</option>';
         members.forEach((member, idx) => {
             const option = document.createElement('option');
             option.value = idx;
@@ -575,7 +576,7 @@
         const selectedIndex = memberSelect.value;
         const passwordInput = document.getElementById('loginPassword').value.trim();
         if (selectedIndex === "" || selectedIndex === null) {
-            loginErrorDiv.innerText = "❌ Please select a team member from the photo roster.";
+            loginErrorDiv.innerText = "❌ Please select a team member.";
             return;
         }
         if (passwordInput === "") {
