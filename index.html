@@ -6,6 +6,7 @@
 <title>Attendance Monitor</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 *{
 margin:0;
@@ -79,6 +80,12 @@ border:none;
 border-radius:2rem;
 font-size:1rem;
 cursor:pointer;
+transition: all 0.3s ease;
+}
+
+.login-btn:hover{
+background:#2c5a7a;
+transform: translateY(-2px);
 }
 
 .dashboard{
@@ -126,6 +133,7 @@ padding:0.3rem 0.9rem;
 border-radius:40px;
 font-size:0.8rem;
 font-weight:600;
+color:#2f855a;
 }
 
 .attendance-badge.absent{
@@ -144,12 +152,20 @@ border:none;
 padding:0.5rem 1.2rem;
 border-radius:2rem;
 cursor:pointer;
+transition: all 0.3s ease;
+}
+
+.logout-btn:hover{
+background:#e2e8f0;
 }
 
 .header-top{
 display:flex;
 justify-content:space-between;
+align-items:center;
 margin-bottom:1rem;
+flex-wrap:wrap;
+gap:1rem;
 }
 
 .title-section h1{
@@ -162,6 +178,41 @@ background:#f4f7fc;
 border-radius:40px;
 padding:0.3rem 1.2rem;
 font-weight:600;
+}
+
+.action-buttons{
+display:flex;
+gap:0.8rem;
+margin-bottom:1.5rem;
+flex-wrap:wrap;
+}
+
+.action-btn{
+background:linear-gradient(135deg,#1e3a5f,#2c5a7a);
+color:white;
+border:none;
+padding:0.7rem 1.5rem;
+border-radius:2rem;
+cursor:pointer;
+font-weight:600;
+font-size:0.9rem;
+display:flex;
+align-items:center;
+gap:0.5rem;
+transition: all 0.3s ease;
+}
+
+.action-btn:hover{
+transform: translateY(-2px);
+box-shadow: 0 8px 20px rgba(30,58,95,0.3);
+}
+
+.action-btn.secondary{
+background:linear-gradient(135deg,#38a169,#2f855a);
+}
+
+.action-btn i{
+font-size:1rem;
 }
 
 .stats-grid{
@@ -177,12 +228,23 @@ border-radius:1.5rem;
 padding:1rem 1.5rem;
 flex:1;
 min-width:200px;
+box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+transition: all 0.3s ease;
+}
+
+.report-card:hover{
+transform: translateY(-3px);
+box-shadow: 0 8px 25px rgba(0,0,0,0.1);
 }
 
 .report-number{
 font-size:2rem;
 font-weight:800;
 }
+
+.report-card.present .report-number{ color:#2f855a; }
+.report-card.late .report-number{ color:#b4621a; }
+.report-card.absent .report-number{ color:#b13e3a; }
 
 .progress-bar-bg{
 background:#e2e8f0;
@@ -196,11 +258,15 @@ background:#2f855a;
 height:100%;
 width:0%;
 border-radius:20px;
+transition: width 0.5s ease;
 }
 
 .attendance-table{
 width:100%;
 border-collapse:collapse;
+background:white;
+border-radius:1rem;
+overflow:hidden;
 }
 
 .attendance-table th,
@@ -211,10 +277,22 @@ text-align:left;
 vertical-align:middle;
 }
 
+.attendance-table th{
+background:#f8fafc;
+font-weight:600;
+color:#2c5a7a;
+}
+
+.attendance-table tr:hover{
+background:#f8fafc;
+}
+
 .status-select{
 padding:0.5rem 0.8rem;
 border-radius:40px;
 border:1px solid #ccd;
+font-family:'Inter',sans-serif;
+cursor:pointer;
 }
 
 .photo-btn{
@@ -225,6 +303,17 @@ padding:0.5rem 1rem;
 border-radius:30px;
 cursor:pointer;
 font-size:0.85rem;
+transition: all 0.3s ease;
+}
+
+.photo-btn:hover{
+background:#2c5a7a;
+}
+
+.photo-btn.disabled{
+background:#ccc;
+cursor:not-allowed;
+pointer-events:none;
 }
 
 .photo-preview{
@@ -234,10 +323,228 @@ border-radius:12px;
 object-fit:cover;
 border:2px solid #dbe7f3;
 display:block;
+margin-top:0.5rem;
 }
 
 .hidden-input{
 display:none;
+}
+
+.no-photo-needed{
+color:#666;
+font-size:0.8rem;
+font-style:italic;
+text-align:center;
+padding:1rem;
+}
+
+/* Analytics Modal */
+.modal-overlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.5);
+display:flex;
+align-items:center;
+justify-content:center;
+z-index:1000;
+opacity:0;
+visibility:hidden;
+transition: all 0.3s ease;
+}
+
+.modal-overlay.active{
+opacity:1;
+visibility:visible;
+}
+
+.modal-content{
+background:white;
+border-radius:2rem;
+padding:2rem;
+max-width:800px;
+width:90%;
+max-height:90vh;
+overflow-y:auto;
+transform: scale(0.9);
+transition: all 0.3s ease;
+}
+
+.modal-overlay.active .modal-content{
+transform: scale(1);
+}
+
+.modal-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:1.5rem;
+padding-bottom:1rem;
+border-bottom:2px solid #f0f4f9;
+}
+
+.modal-header h2{
+font-size:1.5rem;
+color:#1e3a5f;
+}
+
+.close-modal{
+background:none;
+border:none;
+font-size:1.5rem;
+cursor:pointer;
+color:#666;
+transition: color 0.3s ease;
+}
+
+.close-modal:hover{
+color:#1e3a5f;
+}
+
+.analytics-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
+gap:1.5rem;
+}
+
+.chart-container{
+background:#f8fafc;
+border-radius:1.5rem;
+padding:1.5rem;
+}
+
+.chart-container h3{
+margin-bottom:1rem;
+color:#2c5a7a;
+font-size:1.1rem;
+}
+
+.pie-chart-wrapper{
+max-width:280px;
+margin:0 auto;
+}
+
+/* Health Bar */
+.health-bar-container{
+background:#f8fafc;
+border-radius:1.5rem;
+padding:1.5rem;
+}
+
+.health-bar-container h3{
+margin-bottom:1rem;
+color:#2c5a7a;
+}
+
+.health-bar{
+height:30px;
+background:#e2e8f0;
+border-radius:20px;
+overflow:hidden;
+position:relative;
+}
+
+.health-fill{
+height:100%;
+border-radius:20px;
+transition: all 0.5s ease;
+display:flex;
+align-items:center;
+justify-content:center;
+color:white;
+font-weight:700;
+font-size:0.9rem;
+}
+
+.health-fill.excellent{
+background:linear-gradient(90deg,#38a169,#48bb78);
+}
+
+.health-fill.good{
+background:linear-gradient(90deg,#68d391,#9ae6b4);
+}
+
+.health-fill.warning{
+background:linear-gradient(90deg,#ecc94b,#f6e05e);
+}
+
+.health-fill.danger{
+background:linear-gradient(90deg,#e53e3e,#fc8181);
+}
+
+.health-status{
+margin-top:1rem;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.health-label{
+font-weight:600;
+font-size:1.1rem;
+}
+
+.health-description{
+color:#666;
+font-size:0.9rem;
+}
+
+/* Statistics Summary */
+.stats-summary{
+background:#f8fafc;
+border-radius:1.5rem;
+padding:1.5rem;
+margin-top:1.5rem;
+}
+
+.stats-summary h3{
+margin-bottom:1rem;
+color:#2c5a7a;
+}
+
+.summary-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit, minmax(150px, 1fr));
+gap:1rem;
+}
+
+.summary-item{
+background:white;
+padding:1rem;
+border-radius:1rem;
+text-align:center;
+}
+
+.summary-item .value{
+font-size:1.8rem;
+font-weight:800;
+}
+
+.summary-item .label{
+color:#666;
+font-size:0.85rem;
+margin-top:0.3rem;
+}
+
+.summary-item.present .value{ color:#2f855a; }
+.summary-item.late .value{ color:#b4621a; }
+.summary-item.absent .value{ color:#b13e3a; }
+
+@media(max-width:768px){
+.analytics-grid{
+grid-template-columns:1fr;
+}
+  
+.action-buttons{
+flex-direction:column;
+}
+  
+.action-btn{
+width:100%;
+justify-content:center;
+}
 }
 </style>
 </head>
@@ -283,7 +590,7 @@ display:none;
 
 <div style="display:flex;gap:10px;align-items:center;">
 <div id="profileStatusBadge" class="attendance-badge">Present</div>
-<button id="logoutButton" class="logout-btn">Logout</button>
+<button id="logoutButton" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
 </div>
 </div>
 
@@ -291,7 +598,19 @@ display:none;
 <div class="title-section">
 <h1>ATTENDANCE MONITOR</h1>
 </div>
-<div class="month-badge">APRIL 2026</div>
+<div class="month-badge"><i class="fas fa-calendar-alt"></i> APRIL 2026</div>
+</div>
+
+<!-- Action Buttons -->
+<div class="action-buttons">
+<button id="analyticsBtn" class="action-btn">
+<i class="fas fa-chart-pie"></i>
+View Analytics
+</button>
+<button id="exportBtn" class="action-btn secondary">
+<i class="fas fa-download"></i>
+Export Report
+</button>
 </div>
 
 <div class="stats-grid">
@@ -300,7 +619,7 @@ display:none;
 <div class="report-number" id="totalMembers">9</div>
 </div>
 
-<div class="report-card">
+<div class="report-card present">
 <h3>PRESENT</h3>
 <div class="report-number" id="presentCount">0</div>
 <div class="progress-bar-bg">
@@ -308,12 +627,12 @@ display:none;
 </div>
 </div>
 
-<div class="report-card">
+<div class="report-card late">
 <h3>LATE</h3>
 <div class="report-number" id="lateCount">0</div>
 </div>
 
-<div class="report-card">
+<div class="report-card absent">
 <h3>ABSENT</h3>
 <div class="report-number" id="absentCount">0</div>
 </div>
@@ -333,6 +652,61 @@ display:none;
 </div>
 </div>
 
+<!-- Analytics Modal -->
+<div id="analyticsModal" class="modal-overlay">
+<div class="modal-content">
+<div class="modal-header">
+<h2><i class="fas fa-chart-line"></i> Attendance Analytics</h2>
+<button class="close-modal" id="closeModal">&times;</button>
+</div>
+
+<div class="analytics-grid">
+<!-- Pie Chart -->
+<div class="chart-container">
+<h3><i class="fas fa-chart-pie"></i> Attendance Distribution</h3>
+<div class="pie-chart-wrapper">
+<canvas id="attendancePieChart"></canvas>
+</div>
+</div>
+
+<!-- Health Bar -->
+<div class="health-bar-container">
+<h3><i class="fas fa-heartbeat"></i> Attendance Health</h3>
+<div class="health-bar">
+<div class="health-fill" id="healthFill">0%</div>
+</div>
+<div class="health-status">
+<span class="health-label" id="healthLabel">Calculating...</span>
+<span class="health-description" id="healthDescription"></span>
+</div>
+</div>
+</div>
+
+<!-- Statistics Summary -->
+<div class="stats-summary">
+<h3><i class="fas fa-clipboard-list"></i> Detailed Statistics</h3>
+<div class="summary-grid">
+<div class="summary-item present">
+<div class="value" id="summaryPresent">0</div>
+<div class="label">Present</div>
+</div>
+<div class="summary-item late">
+<div class="value" id="summaryLate">0</div>
+<div class="label">Late</div>
+</div>
+<div class="summary-item absent">
+<div class="value" id="summaryAbsent">0</div>
+<div class="label">Absent</div>
+</div>
+<div class="summary-item">
+<div class="value" id="summaryRate">0%</div>
+<div class="label">Attendance Rate</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
 <script>
 const members = [
 { fullName:"Dayag, Arwil", defaultStatus:"Present" },
@@ -349,10 +723,12 @@ const members = [
 let attendanceStatus = members.map(m => m.defaultStatus);
 let attendancePhotos = members.map(() => "");
 let currentLoggedInUser = null;
+let pieChart = null;
 
 const memberSelect = document.getElementById("memberSelect");
 const loginContainer = document.getElementById("loginContainer");
 const dashboardApp = document.getElementById("dashboardApp");
+const analyticsModal = document.getElementById("analyticsModal");
 
 function populateMemberSelect(){
 members.forEach((member,index)=>{
@@ -370,7 +746,7 @@ if(status === "Late") return "late";
 return "";
 }
 
-function updateStats(){
+function getAttendanceCounts(){
 let present = 0;
 let absent = 0;
 let late = 0;
@@ -381,13 +757,180 @@ if(status === "Absent") absent++;
 if(status === "Late") late++;
 });
 
-document.getElementById("presentCount").innerText = present;
-document.getElementById("absentCount").innerText = absent;
-document.getElementById("lateCount").innerText = late;
-document.getElementById("totalMembers").innerText = members.length;
+return { present, absent, late, total: members.length };
+}
 
-const rate = Math.round((present / members.length) * 100);
+function updateStats(){
+const counts = getAttendanceCounts();
+
+document.getElementById("presentCount").innerText = counts.present;
+document.getElementById("absentCount").innerText = counts.absent;
+document.getElementById("lateCount").innerText = counts.late;
+document.getElementById("totalMembers").innerText = counts.total;
+
+const rate = Math.round((counts.present / counts.total) * 100);
 document.getElementById("presentProgress").style.width = rate + "%";
+}
+
+function updatePieChart(){
+const counts = getAttendanceCounts();
+const ctx = document.getElementById('attendancePieChart').getContext('2d');
+
+if(pieChart){
+pieChart.data.datasets[0].data = [counts.present, counts.late, counts.absent];
+pieChart.update('none');
+return;
+}
+
+pieChart = new Chart(ctx, {
+type: 'doughnut',
+data: {
+labels: ['Present', 'Late', 'Absent'],
+datasets: [{
+data: [counts.present, counts.late, counts.absent],
+backgroundColor: [
+'#38a169',
+'#ecc94b',
+'#e53e3e'
+],
+borderWidth: 0,
+hoverOffset: 10
+}]
+},
+options: {
+responsive: true,
+maintainAspectRatio: true,
+plugins: {
+legend: {
+position: 'bottom',
+labels: {
+padding: 20,
+usePointStyle: true,
+font: {
+family: 'Inter',
+size: 12
+}
+}
+}
+},
+cutout: '60%'
+}
+});
+}
+
+function updateHealthBar(){
+const counts = getAttendanceCounts();
+const healthPercent = Math.round(((counts.present + (counts.late * 0.5)) / counts.total) * 100);
+  
+const healthFill = document.getElementById('healthFill');
+const healthLabel = document.getElementById('healthLabel');
+const healthDescription = document.getElementById('healthDescription');
+
+healthFill.style.width = healthPercent + '%';
+healthFill.innerText = healthPercent + '%';
+
+// Remove all classes
+healthFill.classList.remove('excellent', 'good', 'warning', 'danger');
+
+if(healthPercent >= 90){
+healthFill.classList.add('excellent');
+healthLabel.innerText = 'Excellent';
+healthLabel.style.color = '#38a169';
+healthDescription.innerText = 'Outstanding attendance!';
+} else if(healthPercent >= 75){
+healthFill.classList.add('good');
+healthLabel.innerText = 'Good';
+healthLabel.style.color = '#68d391';
+healthDescription.innerText = 'Keep up the good work!';
+} else if(healthPercent >= 50){
+healthFill.classList.add('warning');
+healthLabel.innerText = 'Needs Improvement';
+healthLabel.style.color = '#ecc94b';
+healthDescription.innerText = 'Attendance could be better.';
+} else {
+healthFill.classList.add('danger');
+healthLabel.innerText = 'Critical';
+healthLabel.style.color = '#e53e3e';
+healthDescription.innerText = 'Immediate attention required!';
+}
+}
+
+function updateAnalyticsSummary(){
+const counts = getAttendanceCounts();
+const rate = Math.round((counts.present / counts.total) * 100);
+
+document.getElementById('summaryPresent').innerText = counts.present;
+document.getElementById('summaryLate').innerText = counts.late;
+document.getElementById('summaryAbsent').innerText = counts.absent;
+document.getElementById('summaryRate').innerText = rate + '%';
+}
+
+function openAnalyticsModal(){
+analyticsModal.classList.add('active');
+updatePieChart();
+updateHealthBar();
+updateAnalyticsSummary();
+}
+
+function closeAnalyticsModal(){
+analyticsModal.classList.remove('active');
+}
+
+function updatePhotoSection(photoCell, index, status) {
+  // Clear existing content
+  photoCell.innerHTML = '';
+  
+  if (status === 'Absent') {
+    // Show "No photo needed" message for absent
+    const noPhotoDiv = document.createElement('div');
+    noPhotoDiv.className = 'no-photo-needed';
+    noPhotoDiv.innerHTML = '<i class="fas fa-check-circle"></i> No photo required';
+    photoCell.appendChild(noPhotoDiv);
+  } else {
+    // Show photo upload functionality for Present/Late
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.capture = "environment";
+    input.className = "hidden-input";
+    input.id = "photoInput" + index;
+
+    const button = document.createElement("button");
+    button.className = "photo-btn";
+    button.innerHTML = attendancePhotos[index] ? '<i class="fas fa-redo"></i> Retake' : '<i class="fas fa-camera"></i> Capture';
+
+    button.onclick = () => {
+      input.click();
+    };
+
+    const preview = document.createElement("img");
+    preview.className = "photo-preview";
+
+    if(attendancePhotos[index]){
+      preview.src = attendancePhotos[index];
+      preview.style.display = "block";
+    } else {
+      preview.style.display = "none";
+    }
+
+    input.addEventListener("change",(e)=>{
+      const file = e.target.files[0];
+      if(file){
+        const reader = new FileReader();
+        reader.onload = function(event){
+          attendancePhotos[index] = event.target.result;
+          preview.src = event.target.result;
+          preview.style.display = "block";
+          button.innerHTML = '<i class="fas fa-redo"></i> Retake';
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    photoCell.appendChild(button);
+    photoCell.appendChild(input);
+    photoCell.appendChild(preview);
+  }
 }
 
 function renderAttendanceTable(){
@@ -415,56 +958,51 @@ select.appendChild(option);
 select.addEventListener("change",(e)=>{
 attendanceStatus[index] = e.target.value;
 updateStats();
+  
+  // Update photo section based on new status
+  const photoCell = row.cells[2];
+  updatePhotoSection(photoCell, index, e.target.value);
 });
 
 statusCell.appendChild(select);
 
 const photoCell = row.insertCell(2);
 
-const input = document.createElement("input");
-input.type = "file";
-input.accept = "image/*";
-input.capture = "environment";
-input.className = "hidden-input";
-input.id = "photoInput" + index;
+// Initialize photo section based on current status
+updatePhotoSection(photoCell, index, attendanceStatus[index]);
 
-const button = document.createElement("button");
-button.className = "photo-btn";
-button.innerText = attendancePhotos[index] ? "Retake Photo" : "Take Photo";
-
-button.onclick = () => {
-input.click();
-};
-
-const preview = document.createElement("img");
-preview.className = "photo-preview";
-
-if(attendancePhotos[index]){
-preview.src = attendancePhotos[index];
-} else {
-preview.style.display = "none";
-}
-
-input.addEventListener("change",(e)=>{
-const file = e.target.files[0];
-if(file){
-const reader = new FileReader();
-reader.onload = function(event){
-attendancePhotos[index] = event.target.result;
-preview.src = event.target.result;
-preview.style.display = "block";
-button.innerText = "Retake Photo";
-};
-reader.readAsDataURL(file);
-}
-});
-
-photoCell.appendChild(button);
-photoCell.appendChild(input);
-photoCell.appendChild(preview);
 });
 
 updateStats();
+}
+
+function exportReport(){
+const counts = getAttendanceCounts();
+const rate = Math.round((counts.present / counts.total) * 100);
+  
+let report = "ATTENDANCE REPORT - APRIL 2026\n";
+report += "================================\n\n";
+report += "Summary:\n";
+report += `Total Members: ${counts.total}\n`;
+report += `Present: ${counts.present}\n`;
+report += `Late: ${counts.late}\n`;
+report += `Absent: ${counts.absent}\n`;
+report += `Attendance Rate: ${rate}%\n\n`;
+report += "Details:\n";
+report += "--------------------------------\n";
+  
+members.forEach((member, index) => {
+const photoStatus = attendancePhotos[index] ? ' (Photo taken)' : '';
+report += `${member.fullName}: ${attendanceStatus[index]}${photoStatus}\n`;
+});
+
+const blob = new Blob([report], { type: 'text/plain' });
+const url = URL.createObjectURL(blob);
+const a = document.createElement('a');
+a.href = url;
+a.download = 'attendance-report.txt';
+a.click();
+URL.revokeObjectURL(url);
 }
 
 function handleLogin(){
@@ -480,11 +1018,30 @@ dashboardApp.style.display = "block";
 renderAttendanceTable();
 }
 
+// Event Listeners
 document.getElementById("doLoginBtn").addEventListener("click",handleLogin);
 
 document.getElementById("logoutButton").addEventListener("click",()=>{
 dashboardApp.style.display = "none";
 loginContainer.style.display = "block";
+currentLoggedInUser = null;
+});
+
+document.getElementById("analyticsBtn").addEventListener("click", openAnalyticsModal);
+document.getElementById("closeModal").addEventListener("click", closeAnalyticsModal);
+document.getElementById("exportBtn").addEventListener("click", exportReport);
+
+analyticsModal.addEventListener("click", (e) => {
+if(e.target === analyticsModal){
+closeAnalyticsModal();
+}
+});
+
+// Close modal with Escape key
+document.addEventListener("keydown", (e) => {
+if(e.key === "Escape" && analyticsModal.classList.contains("active")){
+closeAnalyticsModal();
+}
 });
 
 populateMemberSelect();
